@@ -1,27 +1,30 @@
 // src/app.ts
-import express, {json, urlencoded} from "express";
-import { RegisterRoutes } from "../build/routes";
+import express from "express";
+import { RegisterRoutes } from "../../build/routes";
 import * as swaggerUi from "swagger-ui-express";
-import * as swaggerDocument from "../build/swagger.json";
-import { promisify } from 'util';
-import fs from 'fs';
-import path from 'path';
-import listFiles from 'isomorphic-git';
-import http from 'isomorphic-git/http/node';
+import * as swaggerDocument from "../../build/swagger.json";
+import { setupMiddlewares } from "./setup.middlewares";
 
-export const app = express();
 
-// Use body parser to read sent json payloads
-app.use(
-  urlencoded({
-    extended: true,
-  })
-);
-app.use(json());
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// import { promisify } from 'util';
+// import fs from 'fs';
+// import path from 'path';
+// import listFiles from 'isomorphic-git';
+// import http from 'isomorphic-git/http/node';
+
+const app = express();
+
+setupMiddlewares(app);
+
 RegisterRoutes(app);
 
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+
+export default app;
+
+/*
 app.get('/:platform/:username/:repositoryName', async (req, res) => {
   const { platform, username, repositoryName } = req.params;
 
@@ -64,7 +67,7 @@ app.get('/:platform/:username/:repositoryName', async (req, res) => {
   }
   return;
 });
-
+*/
 
 
 

@@ -1,19 +1,26 @@
 // src/users/usersController.ts
+import DatabaseService from ".././services/database.service";
 import {
-    Body,
+    // Body,
     Controller,
     Get,
-    Path,
-    Post,
-    Query,
+    // Path,
+    // Post,
+    // Query,
     Route,
-    SuccessResponse,
+    // SuccessResponse,
   } from "tsoa";
-  import { User } from "./user";
-  import { UsersService, UserCreationParams } from "./usersService";
+import { Inject } from "typescript-ioc";
+  // import { User } from "./user";
+  // import { UsersService, UserCreationParams } from "./usersService";
   
-  @Route("users")
+  @Route("/users")
   export class UsersController extends Controller {
+    
+    @Inject
+    private databaseService?:DatabaseService;
+    
+   /*
     @Get("{userId}")
     public async getUser(
       @Path() userId: number,
@@ -30,6 +37,14 @@ import {
       this.setStatus(201); // set return status 201
       new UsersService().create(requestBody);
       return;
+    }
+
+*/
+    @Get("/test")
+    public async testAPI(
+      
+    ): Promise<any> {
+      return {test:this.databaseService?.testFunction()};
     }
   }
   

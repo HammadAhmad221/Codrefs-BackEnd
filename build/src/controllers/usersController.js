@@ -17,10 +17,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 // src/users/usersController.ts
+const database_service_1 = __importDefault(require(".././services/database.service"));
 const tsoa_1 = require("tsoa");
+const typescript_ioc_1 = require("typescript-ioc");
 // import { User } from "./user";
 // import { UsersService, UserCreationParams } from "./usersService";
 let UsersController = class UsersController extends tsoa_1.Controller {
@@ -45,11 +50,16 @@ let UsersController = class UsersController extends tsoa_1.Controller {
  
  */
     testAPI() {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            return { test: true };
+            return { test: (_a = this.databaseService) === null || _a === void 0 ? void 0 : _a.testFunction() };
         });
     }
 };
+__decorate([
+    typescript_ioc_1.Inject,
+    __metadata("design:type", database_service_1.default)
+], UsersController.prototype, "databaseService", void 0);
 __decorate([
     (0, tsoa_1.Get)("/test"),
     __metadata("design:type", Function),

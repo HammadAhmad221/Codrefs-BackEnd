@@ -6,7 +6,7 @@ exports.RegisterRoutes = void 0;
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 const runtime_1 = require("@tsoa/runtime");
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-const usersController_1 = require("./../src/controllers/usersController");
+const usersController_1 = require("./src/controllers/usersController");
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 const models = {};
 const validationService = new runtime_1.ValidationService(models);

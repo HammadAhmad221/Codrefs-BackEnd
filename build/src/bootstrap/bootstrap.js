@@ -22,26 +22,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.app = void 0;
 // src/app.ts
-const express_1 = __importStar(require("express"));
-const routes_1 = require("../build/routes");
+const express_1 = __importDefault(require("express"));
+const routes_1 = require("../../build/routes");
 const swaggerUi = __importStar(require("swagger-ui-express"));
-const swaggerDocument = __importStar(require("../build/swagger.json"));
+const swaggerDocument = __importStar(require("../../build/swagger.json"));
+const setup_middlewares_1 = require("./setup.middlewares");
 // import { promisify } from 'util';
 // import fs from 'fs';
 // import path from 'path';
 // import listFiles from 'isomorphic-git';
 // import http from 'isomorphic-git/http/node';
-exports.app = (0, express_1.default)();
-// Use body parser to read sent json payloads
-exports.app.use((0, express_1.urlencoded)({
-    extended: true,
-}));
-exports.app.use((0, express_1.json)());
-exports.app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-(0, routes_1.RegisterRoutes)(exports.app);
+const app = (0, express_1.default)();
+(0, setup_middlewares_1.setupMiddlewares)(app);
+(0, routes_1.RegisterRoutes)(app);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+exports.default = app;
 /*
 app.get('/:platform/:username/:repositoryName', async (req, res) => {
   const { platform, username, repositoryName } = req.params;

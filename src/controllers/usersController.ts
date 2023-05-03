@@ -47,4 +47,3 @@ import { Inject } from "typescript-ioc";
       return {test:this.databaseService?.testFunction()};
     }
   }
-  

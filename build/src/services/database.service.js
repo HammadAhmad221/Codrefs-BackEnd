@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_ioc_1 = require("typescript-ioc");
 let DatabaseService = class DatabaseService {
     testFunction() {
-        return "Message from test function";
+        return "Message from test function service";
     }
 };
 DatabaseService = __decorate([

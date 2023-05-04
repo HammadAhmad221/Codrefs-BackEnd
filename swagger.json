@@ -29,7 +29,24 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/auth/signup": {
+		"/users/testing": {
+			"get": {
+				"operationId": "TestingAPI",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/users/signup": {
 			"post": {
 				"operationId": "Signup",
 				"responses": {
@@ -56,52 +73,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/auth/login": {
-			"post": {
-				"operationId": "Login",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/users/test": {
-			"get": {
-				"operationId": "TestAPI",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
 			}
 		}
 	},

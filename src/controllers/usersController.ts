@@ -1,11 +1,14 @@
 // src/users/usersController.ts
+//fake
+import { User } from '../users/user';
+//fakeend
 import DatabaseService from ".././services/database.service";
 import {
-    // Body,
+     Body,
     Controller,
     Get,
     // Path,
-    // Post,
+     Post,
     // Query,
     Route,
     // SuccessResponse,
@@ -19,32 +22,27 @@ import { Inject } from "typescript-ioc";
     
     @Inject
     private databaseService?:DatabaseService;
-    
-   /*
-    @Get("{userId}")
-    public async getUser(
-      @Path() userId: number,
-      @Query() name?: string
-    ): Promise<User> {
-      return new UsersService().get(userId, name);
-    }
-  
-    @SuccessResponse("201", "Created") // Custom success response
-    @Post()
-    public async createUser(
-      @Body() requestBody: UserCreationParams
-    ): Promise<void> {
-      this.setStatus(201); // set return status 201
-      new UsersService().create(requestBody);
-      return;
-    }
 
-*/
+    @Get("/testing")
+    public async testingAPI(
+      
+    ): Promise<any> {
+      return {testing:"success"};
+    }
+/*
     @Get("/test")
     public async testAPI(
       
     ): Promise<any> {
       return {test:this.databaseService?.testFunction()};
     }
+    //fake
+  */
+
+    @Post('/signup')
+  public async signup(@Body() user: User): Promise<string> {
+    const result = await this.databaseService?.signup(user);
+    if(result){ return result.message;} else {return 'result is undefined'}
   }
-  
+  //fakeend
+  }

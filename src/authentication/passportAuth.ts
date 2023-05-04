@@ -1,31 +1,28 @@
-import {Singleton} from 'typescript-ioc';
-import { User, UserModel } from '../users/user';
-//import { Singleton } from 'typescript-ioc';
+/*import { User, UserModel } from '../users/user';
+import { Singleton } from 'typescript-ioc';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-//fake
+//import { Body } from 'tsoa';
+
 passport.use(
-    new LocalStrategy(
-      { usernameField: 'username', passwordField: 'password' },
-      async (username, password, done) => {
-        const user = await UserModel.findOne({ username }).exec();
-        if (!user) {
-          return done(null, false, { message: 'User not found' });
-        }
-        if (user.password !== password) {
-          return done(null, false, { message: 'Incorrect password' });
-        }
-        return done(null, user);
+  new LocalStrategy(
+    { usernameField: 'username', passwordField: 'password' },
+    async (username, password, done) => {
+      const user = await UserModel.findOne({ username }).exec();
+      if (!user) {
+        return done(null, false, { message: 'User not found' });
       }
-    )
-  );
-  //fakeend
-//pure
+      if (user.password !== password) {
+        return done(null, false, { message: 'Incorrect password' });
+      }
+      return done(null, user);
+    }
+  )
+);
+
 @Singleton
-export default class DatabaseService{
-//pureend
-//fake
-public async signup(user: User): Promise<{ success: boolean; message: string }> {
+export class AuthService {
+  public async signup(user: User): Promise<{ success: boolean; message: string }> {
     try {
       const existingUser = await UserModel.findOne({ username: user.username }).exec();
       if (existingUser) {
@@ -53,17 +50,4 @@ public async signup(user: User): Promise<{ success: boolean; message: string }> 
       })({ username: user.username, password: user.password });
     });
   }
-  //fakeend
-
-
-
-    //pure
-    testFunction():string{
-        return "Message from test function service";
-    } 
-    //testing
-    testingFunction():string{
-        return "I am ok why post is not working";
-    } //endtesting
-}
-//pureend
+}*/  

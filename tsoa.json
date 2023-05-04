@@ -3,15 +3,14 @@
     "noImplicitAdditionalProperties": "throw-on-extras",
     "controllerPathGlobs": ["src/**/*Controller.ts"],
     "spec": {
-      "outputDirectory": "./",
+      "outputDirectory": "./build",
       "specVersion": 3
     },
     "routes": {
-      "routesDir": "./",
+      "routesDir": "./build",
       "template": "./src/tsoa_templates/route.hbs"
     },
     "ioc": {
-      "containerFile": "src/di/inversify.config.ts"
     }
   }
   

@@ -37,15 +37,13 @@ let UsersController = class UsersController extends tsoa_1.Controller {
             return { testing: "success" };
         });
     }
-    /*
-        @Get("/test")
-        public async testAPI(
-          
-        ): Promise<any> {
-          return {test:this.databaseService?.testFunction()};
-        }
-        //fake
-      */
+    testAPI() {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            return { test: (_a = this.databaseService) === null || _a === void 0 ? void 0 : _a.testFunction() };
+        });
+    }
+    //fake
     signup(user) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
@@ -69,6 +67,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "testingAPI", null);
+__decorate([
+    (0, tsoa_1.Get)("/test"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "testAPI", null);
 __decorate([
     (0, tsoa_1.Post)('/signup'),
     __param(0, (0, tsoa_1.Body)()),

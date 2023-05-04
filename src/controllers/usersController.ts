@@ -29,7 +29,7 @@ import { Inject } from "typescript-ioc";
     ): Promise<any> {
       return {testing:"success"};
     }
-/*
+
     @Get("/test")
     public async testAPI(
       
@@ -37,7 +37,7 @@ import { Inject } from "typescript-ioc";
       return {test:this.databaseService?.testFunction()};
     }
     //fake
-  */
+
 
     @Post('/signup')
   public async signup(@Body() user: User): Promise<string> {

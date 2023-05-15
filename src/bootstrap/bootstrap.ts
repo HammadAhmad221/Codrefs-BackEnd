@@ -4,14 +4,7 @@ import { RegisterRoutes } from "../../build/routes";
 import * as swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "../../build/swagger.json";
 import { setupMiddlewares } from "./setup.middlewares";
-
-
-
-// import { promisify } from 'util';
-// import fs from 'fs';
-// import path from 'path';
-// import listFiles from 'isomorphic-git';
-// import http from 'isomorphic-git/http/node';
+//import passport from "passport";
 
 const app = express();
 
@@ -20,10 +13,14 @@ setupMiddlewares(app);
 RegisterRoutes(app);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-
+//app.use(express.json());
+//app.use(passport.initialize());
 export default app;
-
+// import { promisify } from 'util';
+// import fs from 'fs';
+// import path from 'path';
+// import listFiles from 'isomorphic-git';
+// import http from 'isomorphic-git/http/node';
 /*
 app.get('/:platform/:username/:repositoryName', async (req, res) => {
   const { platform, username, repositoryName } = req.params;

@@ -1,7 +1,8 @@
-/*import { User, UserModel } from '../users/user';
+import { User, UserModel } from '../users/user';
 import { Singleton } from 'typescript-ioc';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+//import { IsNotEmpty } from 'class-validator';
 //import { Body } from 'tsoa';
 
 passport.use(
@@ -21,12 +22,17 @@ passport.use(
 );
 
 @Singleton
-export class AuthService {
+export default class AuthService {
   public async signup(user: User): Promise<{ success: boolean; message: string }> {
     try {
+      console.log("Received user object:", user);
       const existingUser = await UserModel.findOne({ username: user.username }).exec();
+      console.log("Existing user:", existingUser);
       if (existingUser) {
         return { success: false, message: 'User already exists' };
+      }
+      if (!user.username || !user.password) {
+        return { success: false, message: 'Username and password are required' };
       }
       await UserModel.create(user);
       return { success: true, message: 'User created successfully' };
@@ -34,20 +40,25 @@ export class AuthService {
       console.error(err);
       return { success: false, message: 'Error creating user' };
     }
-  }
-  
-  public async login(user: User): Promise<{ success: boolean; message: string }> {
+}
+public async login(user: User): Promise<{ success: boolean; message: string }> {
+  const existingUser = await UserModel.findOne({ username: user.username }).exec();
     return new Promise((resolve, reject) => {
-      passport.authenticate('local', (err:any, user:any, info:any) => {
+      passport.authenticate('local', (err:any) => {
         if (err) {
           console.error(err);
           return reject({ success: false, message: 'Internal server error' });
         }
-        if (!user) {
-          return resolve({ success: false, message: info.message });
+        
+        if (!existingUser) {
+          return resolve({ success: false, message: `Username: ${user.username} does not exists.Please enter correct username` });
+        }
+        if (existingUser.password!==user.password) {
+          return resolve({ success: false, message: `please enter correct password:Mr.${user.username}` });
         }
         return resolve({ success: true, message: 'Login successful' });
-      })({ username: user.username, password: user.password });
+      })({ user });
     });
   }
-}*/  
+
+}

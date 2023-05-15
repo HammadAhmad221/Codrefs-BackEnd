@@ -5,17 +5,20 @@
     status?: "Happy" | "Sad";
     phoneNumbers: string[];
   }*/
+  import { IsNotEmpty,MinLength } from 'class-validator';
+  import { Schema, model } from 'mongoose';
 
-  import { Schema, model, Document } from 'mongoose';
-
-export interface User extends Document {
-  username: string;
-  password: string;
-}
-
+  export class User {
+    @IsNotEmpty()
+    @MinLength(5)
+    username!: string;
+  
+    @IsNotEmpty()
+    password!: string;
+  }  
 const userSchema = new Schema<User>({
-  username: { type: String, unique: true },
-  password: String,
+  username: { type: String, unique: true,required:true },
+  password: {type: String, required:true}
 });
 
 export const UserModel = model<User>('User', userSchema);

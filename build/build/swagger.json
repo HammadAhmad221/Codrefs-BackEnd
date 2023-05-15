@@ -6,12 +6,21 @@
         "requestBodies": {},
         "responses": {},
         "schemas": {
-            "FlattenMaps_T_": {
-                "properties": {},
-                "type": "object"
-            },
             "User": {
-                "$ref": "#/components/schemas/FlattenMaps_T_"
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "type": "object",
+                "additionalProperties": false
             }
         },
         "securitySchemes": {}
@@ -29,41 +38,7 @@
     },
     "openapi": "3.0.0",
     "paths": {
-        "/users/testing": {
-            "get": {
-                "operationId": "TestingAPI",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                },
-                "security": [],
-                "parameters": []
-            }
-        },
-        "/users/test": {
-            "get": {
-                "operationId": "TestAPI",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                },
-                "security": [],
-                "parameters": []
-            }
-        },
-        "/users/signup": {
+        "/auth/signup": {
             "post": {
                 "operationId": "Signup",
                 "responses": {
@@ -90,6 +65,52 @@
                         }
                     }
                 }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "operationId": "Login",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/test": {
+            "get": {
+                "operationId": "TestAPI",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
             }
         }
     },

@@ -20,7 +20,7 @@ function connectDB() {
             useNewUrlParser: true,
             useUnifiedTopology: true
         };
-        mongoose_1.default.connect('mongodb://coderefs:Ammar12345678@127.0.0.1:27017/?authSource=admin&readPreference=primary&directConnection=true&ssl=true&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true', options)
+        mongoose_1.default.connect('mongodb://0.0.0.0:27017', options)
             .then(() => console.log('Connected to database!'))
             .catch(error => console.error('Error connecting to database:', error));
     });

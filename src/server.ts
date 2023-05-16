@@ -1,5 +1,5 @@
 import  app  from "./bootstrap/bootstrap";
-import { connectDB } from './db';
+import { connectDB } from './dataBases/mongoDB';
 
 // Connect to MongoDB
 connectDB();

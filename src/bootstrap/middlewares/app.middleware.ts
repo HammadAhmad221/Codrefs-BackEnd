@@ -10,7 +10,5 @@ export function appMiddleware(req: Request, res: Response, next: NextFunction) {
   if(isValid==false){
     res.status(403).send('Access denied');
   }
-   
-
-  next();
+   next();
 }

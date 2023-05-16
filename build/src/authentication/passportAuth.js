@@ -22,9 +22,10 @@ const user_1 = require("../users/user");
 const typescript_ioc_1 = require("typescript-ioc");
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = require("passport-local");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 //import { IsNotEmpty } from 'class-validator';
 //import { Body } from 'tsoa';
-passport_1.default.use(new passport_local_1.Strategy({ usernameField: 'username', passwordField: 'password' }, (username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
+passport_1.default.use(new passport_local_1.Strategy({ usernameField: 'email', passwordField: 'password' }, (username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.UserModel.findOne({ username }).exec();
     if (!user) {
         return done(null, false, { message: 'User not found' });
@@ -38,16 +39,20 @@ let AuthService = class AuthService {
     signup(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("Received user object:", user);
-                const existingUser = yield user_1.UserModel.findOne({ username: user.username }).exec();
-                console.log("Existing user:", existingUser);
+                //console.log("Received user object:", user);
+                const existingUser = yield user_1.UserModel.findOne({ username: user.email }).exec();
+                //console.log("Existing user:", existingUser);
                 if (existingUser) {
-                    return { success: false, message: 'User already exists' };
+                    return { success: false, message: 'Username already exists.Please enter different one.' };
                 }
-                if (!user.username || !user.password) {
+                if (!user.email || !user.password) {
                     return { success: false, message: 'Username and password are required' };
                 }
-                yield user_1.UserModel.create(user);
+                // Hash the password
+                const hashedPassword = yield bcrypt_1.default.hash(user.password, 10);
+                // Create a new user object with the hashed password
+                const newUser = Object.assign(Object.assign({}, user), { password: hashedPassword });
+                yield user_1.UserModel.create(newUser);
                 return { success: true, message: 'User created successfully' };
             }
             catch (err) {
@@ -57,23 +62,23 @@ let AuthService = class AuthService {
         });
     }
     login(user) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const existingUser = yield user_1.UserModel.findOne({ username: user.username }).exec();
-            return new Promise((resolve, reject) => {
-                passport_1.default.authenticate('local', (err) => {
-                    if (err) {
-                        console.error(err);
-                        return reject({ success: false, message: 'Internal server error' });
-                    }
-                    if (!existingUser) {
-                        return resolve({ success: false, message: `Username:${user.username} does not exists.Please enter correct username` });
-                    }
-                    if (existingUser.password !== user.password) {
-                        return resolve({ success: false, message: `please enter correct password:Mr.${user.username}` });
-                    }
-                    return resolve({ success: true, message: 'Login successful' });
-                })({ user });
-            });
+        return new Promise((resolve, reject) => {
+            passport_1.default.authenticate('local', (err) => __awaiter(this, void 0, void 0, function* () {
+                if (err) {
+                    console.error(err);
+                    return reject({ success: false, message: 'Internal server error' });
+                }
+                const existingUser = yield user_1.UserModel.findOne({ username: user.email }).exec();
+                if (!existingUser) {
+                    return resolve({ success: false, message: `Username:${user.email} does not exist. Please enter the correct username` });
+                }
+                // Compare the hashed password
+                const passwordMatch = yield bcrypt_1.default.compare(user.password, existingUser.password);
+                if (!passwordMatch) {
+                    return resolve({ success: false, message: `please enter correct password:Mr.${user.email}` });
+                }
+                return resolve({ success: true, message: 'Login successful' });
+            }))({ user });
         });
     }
 };

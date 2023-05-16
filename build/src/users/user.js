@@ -19,20 +19,50 @@ exports.UserModel = exports.User = void 0;
   }*/
 const class_validator_1 = require("class-validator");
 const mongoose_1 = require("mongoose");
+/*export class User {
+  @IsNotEmpty()
+  @MinLength(5)
+  username!: string;
+  @IsNotEmpty()
+  password!: string;
+}
+const userSchema = new Schema<User>({
+username: { type: String, unique: true,required:true },
+password: {type: String, required:true}
+});*/
 class User {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MinLength)(5),
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.MinLength)(12),
     __metadata("design:type", String)
-], User.prototype, "username", void 0);
+], User.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], User.prototype, "company", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], User.prototype, "firstName", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], User.prototype, "lastName", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(5),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 exports.User = User;
 const userSchema = new mongoose_1.Schema({
-    username: { type: String, unique: true, required: true },
-    password: { type: String, required: true }
+    email: { type: String, unique: true, required: true },
+    company: { type: String },
+    firstName: { type: String },
+    lastName: { type: String },
+    password: { type: String, required: true },
+    created: { type: Date, default: new Date() }
+    //plan: {type:Schema.Types.ObjectId,ref:"Plan"}
 });
 exports.UserModel = (0, mongoose_1.model)('User', userSchema);

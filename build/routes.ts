@@ -84,7 +84,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/auth/login/google',
+        app.get('/auth/google',
             ...(fetchMiddlewares<RequestHandler>(AuthController)),
             ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.googleLogin)),
 
@@ -126,7 +126,7 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.googleLoginCallback.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, 302, next);
+              promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }

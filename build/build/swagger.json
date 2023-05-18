@@ -109,7 +109,7 @@
                 }
             }
         },
-        "/auth/login/google": {
+        "/auth/google": {
             "get": {
                 "operationId": "GoogleLogin",
                 "responses": {
@@ -130,8 +130,8 @@
             "get": {
                 "operationId": "GoogleLoginCallback",
                 "responses": {
-                    "302": {
-                        "description": "Redirect to home page",
+                    "200": {
+                        "description": "Ok",
                         "content": {
                             "application/json": {
                                 "schema": {}

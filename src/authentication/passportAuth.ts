@@ -1,6 +1,6 @@
 import { User, UserModel } from '../users/user';
 import { Singleton } from 'typescript-ioc';
-import passport from 'passport';
+import passport  from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import bcrypt from 'bcrypt';
@@ -10,9 +10,15 @@ passport.use(
     {
       clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
       clientSecret: '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',
-      callbackURL: 'https://localhost:3000/auth/login/google/callback'
+      callbackURL: 'https://stage.gradvantage.co/auth/login/google/callback'
     },
+    
     async (accessToken, refreshToken, profile, done) => {
+      console.log('Existing user found:',profile);
+      console.log('Access Token:', accessToken);
+      console.log('Refresh Token:', refreshToken);
+      done(null,true);
+      /*
       try {
         const existingUser = await UserModel.findOne({ email: profile.email }).exec();
 
@@ -29,9 +35,23 @@ passport.use(
         console.error('Error during authentication:', error);
         return done(error);
       }
+
+      */
     }
+  
   )
+  
 );
+
+ 
+
+ 
+
+
+
+
+
+
 
 //import { IsNotEmpty } from 'class-validator';
 //import { Body } from 'tsoa';
@@ -103,9 +123,13 @@ export default class AuthService {
       })({ user });
     });
   }
-  public googleLogin(): any {
+   public googleLogin(): any {
     console.log('Redirecting to Google login');
-    return passport.authenticate('google',{scope:['email']});
+    try{
+     passport.authenticate('google',{scope:["profile"]});
+  }catch(error){
+    console.log("errorrs:",error);
+  }
   }
   public googleLoginCallback(): any {
     console.log('Handling Google login callback');

@@ -27,25 +27,31 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 passport_1.default.use(new passport_google_oauth2_1.Strategy({
     clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
     clientSecret: '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',
-    callbackURL: 'https://localhost:3000/auth/login/google/callback'
+    callbackURL: 'https://stage.gradvantage.co/auth/login/google/callback'
 }, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('Existing user found:', profile);
+    console.log('Access Token:', accessToken);
+    console.log('Refresh Token:', refreshToken);
+    done(null, true);
+    /*
     try {
-        const existingUser = yield user_1.UserModel.findOne({ email: profile.email }).exec();
-        if (existingUser) {
-            console.log('Existing user found:', existingUser);
-            console.log('Access Token:', accessToken);
-            console.log('Refresh Token:', refreshToken);
-            return done(null, existingUser);
-        }
-        else {
-            console.log('New user detected');
-            return done(null, false);
-        }
+      const existingUser = await UserModel.findOne({ email: profile.email }).exec();
+
+      if (existingUser) {
+        console.log('Existing user found:', existingUser);
+        console.log('Access Token:', accessToken);
+        console.log('Refresh Token:', refreshToken);
+        return done(null, existingUser);
+      } else {
+        console.log('New user detected');
+        return done(null, false);
+      }
+    } catch (error) {
+      console.error('Error during authentication:', error);
+      return done(error);
     }
-    catch (error) {
-        console.error('Error during authentication:', error);
-        return done(error);
-    }
+
+    */
 })));
 //import { IsNotEmpty } from 'class-validator';
 //import { Body } from 'tsoa';
@@ -107,7 +113,12 @@ let AuthService = class AuthService {
     }
     googleLogin() {
         console.log('Redirecting to Google login');
-        return passport_1.default.authenticate('google', { scope: ['email'] });
+        try {
+            passport_1.default.authenticate('google', { scope: ["profile"] });
+        }
+        catch (error) {
+            console.log("errorrs:", error);
+        }
     }
     googleLoginCallback() {
         console.log('Handling Google login callback');

@@ -1,6 +1,7 @@
-import { Controller, Route,Post,Get, Body, SuccessResponse} from 'tsoa';
+import { Controller, Route,Post,Get, Body} from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { User } from '../users/user';
+
 import AuthService from '../authentication/passportAuth';
 
 
@@ -20,14 +21,16 @@ export class AuthController extends Controller {
     const result = await this.authService.login(user);
     return result.message;
   }
-  @Get('login/google')
-  public googleLogin(): any {
-    return this.authService.googleLogin();
+  @Get('google')
+  public async googleLogin(): Promise<any> {
+    console.log("on google login");
+    
   }
 
   @Get('login/google/callback')
-  @SuccessResponse('302', 'Redirect to home page')
+  // @SuccessResponse('200', 'Redirect to home page')
   public googleLoginCallback(): any {
+    return {success:true,data:"req"};
     return this.authService.googleLoginCallback();
   }
   

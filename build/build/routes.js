@@ -66,7 +66,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/auth/login/google', ...((0, runtime_1.fetchMiddlewares)(authController_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(authController_1.AuthController.prototype.googleLogin)), function AuthController_googleLogin(request, response, next) {
+    app.get('/auth/google', ...((0, runtime_1.fetchMiddlewares)(authController_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(authController_1.AuthController.prototype.googleLogin)), function AuthController_googleLogin(request, response, next) {
         const args = {};
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         let validatedArgs = [];
@@ -89,7 +89,7 @@ function RegisterRoutes(app) {
             validatedArgs = getValidatedArgs(args, request, response);
             const controller = new authController_1.AuthController();
             const promise = controller.googleLoginCallback.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, 302, next);
+            promiseHandler(controller, promise, response, undefined, next);
         }
         catch (err) {
             return next(err);

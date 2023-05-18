@@ -1,8 +1,8 @@
 import  app  from "./bootstrap/bootstrap";
-import { connectDB } from './dataBases/mongoDB';
+//import { connectDB } from './dataBases/mongoDB';
 
 // Connect to MongoDB
-connectDB();
+//connectDB();
 const port = process.env.PORT || 3000;
 
 app.listen(port, () =>

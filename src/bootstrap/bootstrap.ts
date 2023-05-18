@@ -4,7 +4,7 @@ import { RegisterRoutes } from "../../build/routes";
 import * as swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "../../build/swagger.json";
 import { setupMiddlewares } from "./setup.middlewares";
-import passport from "passport";
+import passport from "../passport/passport.strategies";
 import session from 'express-session';
 
 const app = express();
@@ -14,8 +14,11 @@ app.use(session({
   saveUninitialized: false
 }));
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use('/google',passport.authenticate('google', { scope: ['profile'] }));
+
 
 
 setupMiddlewares(app);

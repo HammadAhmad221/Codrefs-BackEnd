@@ -43,9 +43,12 @@ let AuthController = class AuthController extends tsoa_1.Controller {
         });
     }
     googleLogin() {
-        return this.authService.googleLogin();
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("on google login");
+        });
     }
     googleLoginCallback() {
+        return { success: true, data: "req" };
         return this.authService.googleLoginCallback();
     }
 };
@@ -68,14 +71,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, tsoa_1.Get)('login/google'),
+    (0, tsoa_1.Get)('google'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "googleLogin", null);
 __decorate([
-    (0, tsoa_1.Get)('login/google/callback'),
-    (0, tsoa_1.SuccessResponse)('302', 'Redirect to home page'),
+    (0, tsoa_1.Get)('login/google/callback')
+    // @SuccessResponse('200', 'Redirect to home page')
+    ,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)

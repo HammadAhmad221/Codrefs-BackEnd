@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bootstrap_1 = __importDefault(require("./bootstrap/bootstrap"));
-const mongoDB_1 = require("./dataBases/mongoDB");
+//import { connectDB } from './dataBases/mongoDB';
 // Connect to MongoDB
-(0, mongoDB_1.connectDB)();
+//connectDB();
 const port = process.env.PORT || 3000;
 bootstrap_1.default.listen(port, () => console.log(`CodeRefs listening at http://localhost:${port}`));
 //disconnectDB();

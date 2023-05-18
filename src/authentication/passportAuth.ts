@@ -2,7 +2,36 @@ import { User, UserModel } from '../users/user';
 import { Singleton } from 'typescript-ioc';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import bcrypt from 'bcrypt';
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
+      clientSecret: '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',
+      callbackURL: 'https://localhost:3000/auth/login/google/callback'
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const existingUser = await UserModel.findOne({ email: profile.email }).exec();
+
+        if (existingUser) {
+          console.log('Existing user found:', existingUser);
+          console.log('Access Token:', accessToken);
+          console.log('Refresh Token:', refreshToken);
+          return done(null, existingUser);
+        } else {
+          console.log('New user detected');
+          return done(null, false);
+        }
+      } catch (error) {
+        console.error('Error during authentication:', error);
+        return done(error);
+      }
+    }
+  )
+);
 
 //import { IsNotEmpty } from 'class-validator';
 //import { Body } from 'tsoa';
@@ -11,8 +40,8 @@ passport.use(
   new LocalStrategy(
     { usernameField: 'email', passwordField: 'password' },
 
-    async (username, password, done) => {
-      const user = await UserModel.findOne({ username }).exec();
+    async (email, password, done) => {
+      const user = await UserModel.findOne({ email }).exec();
       if (!user) {
         return done(null, false, { message: 'User not found' });
       }
@@ -29,7 +58,7 @@ export default class AuthService {
   public async signup(user: User): Promise<{ success: boolean; message: string }> {
     try {
       //console.log("Received user object:", user);
-      const existingUser = await UserModel.findOne({ username: user.email }).exec();
+      const existingUser = await UserModel.findOne({ email: user.email }).exec();
       //console.log("Existing user:", existingUser);
       if (existingUser) {
         return { success: false, message: 'Username already exists.Please enter different one.' };
@@ -52,18 +81,16 @@ export default class AuthService {
     }
   }
   public login(user: User): Promise<{ success: boolean; message: string }> {
-    
-   
     return new Promise((resolve, reject) => {
       passport.authenticate('local', async (err:any) => {
         if (err) {
           console.error(err);
           return reject({ success: false, message: 'Internal server error' });
         }
-        const existingUser = await UserModel.findOne({ username: user.email }).exec();
+        const existingUser = await UserModel.findOne({ email: user.email }).exec();
         
         if (!existingUser) {
-          return resolve({ success: false, message: `Username:${user.email} does not exist. Please enter the correct username` });
+          return resolve({ success: false, message: `Email:${user.email} does not exist. Please enter the correct username` });
         }
   
         // Compare the hashed password
@@ -75,6 +102,15 @@ export default class AuthService {
         return resolve({ success: true, message: 'Login successful' });
       })({ user });
     });
+  }
+  public googleLogin(): any {
+    console.log('Redirecting to Google login');
+    return passport.authenticate('google',{scope:['email']});
+  }
+  public googleLoginCallback(): any {
+    console.log('Handling Google login callback');
+    return passport.authenticate('google', { failureRedirect: 'https://localhost/auth/login/google', successRedirect: 'https://localhost/auth/login/google/callback' });
+  }
   }
     //Without Hashing WC
   /*public async signup(user: User): Promise<{ success: boolean; message: string }> {
@@ -115,4 +151,3 @@ public async login(user: User): Promise<{ success: boolean; message: string }> {
     });
   }*/
 
-}

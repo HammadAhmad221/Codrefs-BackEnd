@@ -22,11 +22,35 @@ const user_1 = require("../users/user");
 const typescript_ioc_1 = require("typescript-ioc");
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = require("passport-local");
+const passport_google_oauth2_1 = require("passport-google-oauth2");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+passport_1.default.use(new passport_google_oauth2_1.Strategy({
+    clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
+    clientSecret: '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',
+    callbackURL: 'https://localhost:3000/auth/login/google/callback'
+}, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const existingUser = yield user_1.UserModel.findOne({ email: profile.email }).exec();
+        if (existingUser) {
+            console.log('Existing user found:', existingUser);
+            console.log('Access Token:', accessToken);
+            console.log('Refresh Token:', refreshToken);
+            return done(null, existingUser);
+        }
+        else {
+            console.log('New user detected');
+            return done(null, false);
+        }
+    }
+    catch (error) {
+        console.error('Error during authentication:', error);
+        return done(error);
+    }
+})));
 //import { IsNotEmpty } from 'class-validator';
 //import { Body } from 'tsoa';
-passport_1.default.use(new passport_local_1.Strategy({ usernameField: 'email', passwordField: 'password' }, (username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_1.UserModel.findOne({ username }).exec();
+passport_1.default.use(new passport_local_1.Strategy({ usernameField: 'email', passwordField: 'password' }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.UserModel.findOne({ email }).exec();
     if (!user) {
         return done(null, false, { message: 'User not found' });
     }
@@ -40,7 +64,7 @@ let AuthService = class AuthService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 //console.log("Received user object:", user);
-                const existingUser = yield user_1.UserModel.findOne({ username: user.email }).exec();
+                const existingUser = yield user_1.UserModel.findOne({ email: user.email }).exec();
                 //console.log("Existing user:", existingUser);
                 if (existingUser) {
                     return { success: false, message: 'Username already exists.Please enter different one.' };
@@ -68,9 +92,9 @@ let AuthService = class AuthService {
                     console.error(err);
                     return reject({ success: false, message: 'Internal server error' });
                 }
-                const existingUser = yield user_1.UserModel.findOne({ username: user.email }).exec();
+                const existingUser = yield user_1.UserModel.findOne({ email: user.email }).exec();
                 if (!existingUser) {
-                    return resolve({ success: false, message: `Username:${user.email} does not exist. Please enter the correct username` });
+                    return resolve({ success: false, message: `Email:${user.email} does not exist. Please enter the correct username` });
                 }
                 // Compare the hashed password
                 const passwordMatch = yield bcrypt_1.default.compare(user.password, existingUser.password);
@@ -81,8 +105,54 @@ let AuthService = class AuthService {
             }))({ user });
         });
     }
+    googleLogin() {
+        console.log('Redirecting to Google login');
+        return passport_1.default.authenticate('google', { scope: ['email'] });
+    }
+    googleLoginCallback() {
+        console.log('Handling Google login callback');
+        return passport_1.default.authenticate('google', { failureRedirect: 'https://localhost/auth/login/google', successRedirect: 'https://localhost/auth/login/google/callback' });
+    }
 };
 AuthService = __decorate([
     typescript_ioc_1.Singleton
 ], AuthService);
 exports.default = AuthService;
+//Without Hashing WC
+/*public async signup(user: User): Promise<{ success: boolean; message: string }> {
+  try {
+    console.log("Received user object:", user);
+    const existingUser = await UserModel.findOne({ username: user.username }).exec();
+    console.log("Existing user:", existingUser);
+    if (existingUser) {
+      return { success: false, message: 'User already exists' };
+    }
+    if (!user.username || !user.password) {
+      return { success: false, message: 'Username and password are required' };
+    }
+    await UserModel.create(user);
+    return { success: true, message: 'User created successfully' };
+  } catch (err) {
+    console.error(err);
+    return { success: false, message: 'Error creating user' };
+  }
+}
+public async login(user: User): Promise<{ success: boolean; message: string }> {
+const existingUser = await UserModel.findOne({ username: user.username }).exec();
+  return new Promise((resolve, reject) => {
+    passport.authenticate('local', (err:any) => {
+      if (err) {
+        console.error(err);
+        return reject({ success: false, message: 'Internal server error' });
+      }
+      
+      if (!existingUser) {
+        return resolve({ success: false, message: `Username: ${user.username} does not exists.Please enter correct username` });
+      }
+      if (existingUser.password!==user.password) {
+        return resolve({ success: false, message: `please enter correct password:Mr.${user.username}` });
+      }
+      return resolve({ success: true, message: 'Login successful' });
+    })({ user });
+  });
+}*/

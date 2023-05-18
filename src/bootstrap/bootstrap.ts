@@ -4,15 +4,25 @@ import { RegisterRoutes } from "../../build/routes";
 import * as swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "../../build/swagger.json";
 import { setupMiddlewares } from "./setup.middlewares";
-//import passport from "passport";
+import passport from "passport";
+import session from 'express-session';
 
 const app = express();
+app.use(session({
+  secret: 'sufi1234',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 setupMiddlewares(app);
 
 RegisterRoutes(app);
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 //app.use(express.json());
 //app.use(passport.initialize());
 export default app;

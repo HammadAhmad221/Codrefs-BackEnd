@@ -43,12 +43,10 @@ let AuthController = class AuthController extends tsoa_1.Controller {
         });
     }
     googleLogin() {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log("on google login");
-        });
+        console.log("on google login");
+        return this.authService.googleLogin();
     }
     googleLoginCallback() {
-        return { success: true, data: "req" };
         return this.authService.googleLoginCallback();
     }
 };
@@ -74,12 +72,10 @@ __decorate([
     (0, tsoa_1.Get)('google'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", Object)
 ], AuthController.prototype, "googleLogin", null);
 __decorate([
-    (0, tsoa_1.Get)('login/google/callback')
-    // @SuccessResponse('200', 'Redirect to home page')
-    ,
+    (0, tsoa_1.Get)('login/google/callback'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)

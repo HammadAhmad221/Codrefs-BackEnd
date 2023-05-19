@@ -27,7 +27,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 passport_1.default.use(new passport_google_oauth2_1.Strategy({
     clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
     clientSecret: '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',
-    callbackURL: 'https://stage.gradvantage.co/auth/login/google/callback'
+    callbackURL: 'http://localhost:3000/auth/login/google/callback'
 }, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Existing user found:', profile);
     console.log('Access Token:', accessToken);

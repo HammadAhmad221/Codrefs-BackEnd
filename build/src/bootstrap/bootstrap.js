@@ -33,13 +33,13 @@ const swaggerUi = __importStar(require("swagger-ui-express"));
 const swaggerDocument = __importStar(require("../../build/swagger.json"));
 const setup_middlewares_1 = require("./setup.middlewares");
 const passport_strategies_1 = __importDefault(require("../passport/passport.strategies"));
-const express_session_1 = __importDefault(require("express-session"));
+//import session from 'express-session';
 const app = (0, express_1.default)();
-app.use((0, express_session_1.default)({
-    secret: 'sufi1234',
-    resave: false,
-    saveUninitialized: false
-}));
+/*app.use(session({
+  secret: 'sufi1234',
+  resave: false,
+  saveUninitialized: false
+}));*/
 app.use(passport_strategies_1.default.initialize());
 //app.use(passport.session());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

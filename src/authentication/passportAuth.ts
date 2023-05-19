@@ -10,7 +10,7 @@ passport.use(
     {
       clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
       clientSecret: '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',
-      callbackURL: 'https://stage.gradvantage.co/auth/login/google/callback'
+      callbackURL: 'http://localhost:3000/auth/login/google/callback'
     },
     
     async (accessToken, refreshToken, profile, done) => {

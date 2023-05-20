@@ -1,8 +1,10 @@
 import { Controller, Route,Post,Get, Body} from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { User } from '../users/user';
 
+// import passport from '../passport/passport.strategies';
 import AuthService from '../authentication/passportAuth';
+import { User } from '../entities/user';
+
 
 
 @Route('auth')
@@ -23,8 +25,29 @@ export class AuthController extends Controller {
   }
   @Get('google')
   public async googleLogin(): Promise<any> {
-    console.log("on google login");
     
+
+     
+     
+    /*
+    passport.authenticate('google', { scope: ['profile', 'email'] }, (error: any, user: any, info: any) => {
+      if (error) {
+        // Handle authentication error
+        return console.log("Error",{ message: 'Authentication Error' },error);
+      }
+
+      if (!user) {
+        // Handle authentication failure
+        console.log("Failed",{ message: 'Authentication Failed' });
+      }
+
+      // Handle successful authentication
+      // You can redirect to a success page or return an authentication token
+      console.log("Success",{ message: 'Authentication Successful' },info);
+    })(req, resp);
+  */
+     
+  
   }
 
   @Get('login/google/callback')

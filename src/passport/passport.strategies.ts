@@ -1,23 +1,43 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { UserModel } from '../database/mongodb/schema/user';
+
+
 
 passport.use(
     new GoogleStrategy(
       {
-        clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
-        clientSecret: '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',
+        clientID: process.env.GOOGLE_CLIENT_ID || '',
+        clientSecret: process.env.GOOGLE_SECRET || '',
         callbackURL: '/auth/login/google/callback',
-        scope: ['email']
+        scope:['profile','email'],
+       passReqToCallback: true, // Pass the request object to the callback function
       },
-      function(accessToken, refreshToken, profile) {
-        console.log("Access Token;",accessToken);
-        console.log("Refresh Token;",refreshToken);
-        console.log("Profile ;",profile);
-        
+      function verify(accessToken, refreshToken, object0, profile, done) {
+       
+        done(null,profile);
       }
     
     )
     
+  );
+
+  passport.use(
+    new LocalStrategy(
+      { usernameField: 'email', passwordField: 'password' },
+  
+      async (email, password, done) => {
+        const user = await UserModel.findOne({ email }).exec();
+        if (!user) {
+          return done(null, false, { message: 'User not found' });
+        }
+        if (user.password !== password) {
+          return done(null, false, { message: 'Incorrect password' });
+        }
+        return done(null, user);
+      }
+    )
   );
   
    

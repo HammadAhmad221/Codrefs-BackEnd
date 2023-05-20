@@ -1,5 +1,6 @@
 
-import DatabaseService from ".././services/database.service";
+import { UserService } from "../services/user.service";
+//import DatabaseService from ".././services/database.service";
 import {
     Controller,
     Get,
@@ -15,12 +16,14 @@ import { Inject } from "typescript-ioc";
   @Route("/users")
   export class UsersController extends Controller {
     
-    @Inject
-    private databaseService?:DatabaseService;
+    // @Inject
+    // private databaseService?:DatabaseService;
+    @Inject 
+    private userService?:UserService;
     
     @Get("/test")
     public async testAPI(
       
     ): Promise<any> {
-      return {test:this.databaseService?.testFunction()};
+      return {test:this.userService?.getUser()};
     }}

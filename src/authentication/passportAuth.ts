@@ -1,9 +1,12 @@
-import { User, UserModel } from '../users/user';
+
 import { Singleton } from 'typescript-ioc';
 import passport  from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
+import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
+import { UserModel } from '../database/mongodb/schema/user';
+import { User } from '../entities/user';
 
 passport.use(
   new GoogleStrategy(

@@ -27,9 +27,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const tsoa_1 = require("tsoa");
 const typescript_ioc_1 = require("typescript-ioc");
-const user_1 = require("../users/user");
 // import passport from '../passport/passport.strategies';
 const passportAuth_1 = __importDefault(require("../authentication/passportAuth"));
+const user_1 = require("../entities/user");
 let AuthController = class AuthController extends tsoa_1.Controller {
     signup(user) {
         return __awaiter(this, void 0, void 0, function* () {

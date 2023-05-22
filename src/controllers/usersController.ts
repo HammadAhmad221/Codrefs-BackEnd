@@ -2,28 +2,43 @@
 import { UserService } from "../services/user.service";
 //import DatabaseService from ".././services/database.service";
 import {
+  Body,
     Controller,
     Get,
-    // Path,
-    // Query,
+    Post,
     Route,
-    // SuccessResponse,
   } from "tsoa";
 import { Inject } from "typescript-ioc";
-  // import { User } from "./user";
-  // import { UsersService, UserCreationParams } from "./usersService";
+import { ILoginRequest } from "../models/requests/login.request";
+import { ISignupRequest } from "../models/requests/signup.request";
+   
   
   @Route("/users")
   export class UsersController extends Controller {
     
-    // @Inject
-    // private databaseService?:DatabaseService;
     @Inject 
     private userService?:UserService;
     
+
     @Get("/test")
     public async testAPI(
       
     ): Promise<any> {
-      return {test:this.userService?.getUser()};
-    }}
+      return {test:true};
+    }
+  
+    @Post('/login')
+    public async login(@Body() request: ILoginRequest): Promise<any> {
+      return this.userService?.loginWithEmailPassword(request);
+    }
+
+    @Post('/signup')
+    public async signup(@Body() request: ISignupRequest): Promise<any> {
+      return this.userService?.signupWithEmail(request);
+    }
+  
+  
+  
+  }
+
+  

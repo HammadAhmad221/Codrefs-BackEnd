@@ -6,31 +6,38 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
+			"ILoginRequest": {
 				"properties": {
 					"email": {
 						"type": "string"
 					},
-					"company": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
 					"password": {
 						"type": "string"
-					},
-					"created": {
-						"type": "string",
-						"format": "date-time"
 					}
 				},
 				"required": [
 					"email",
 					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISignupRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"company": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password",
+					"company"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -51,98 +58,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/auth/signup": {
-			"post": {
-				"operationId": "Signup",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/login": {
-			"post": {
-				"operationId": "Login",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/google": {
-			"get": {
-				"operationId": "GoogleLogin",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/auth/login/google/callback": {
-			"get": {
-				"operationId": "GoogleLoginCallback",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/users/test": {
 			"get": {
 				"operationId": "TestAPI",
@@ -158,6 +73,60 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/users/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILoginRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/signup": {
+			"post": {
+				"operationId": "Signup",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISignupRequest"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

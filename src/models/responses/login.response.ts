@@ -1,15 +1,13 @@
-
-
-export interface IUser {
-    
+export interface ILoginResponse{
+    id:string;
+    token:string;
     email: string;
     company:string;
     firstName:string;
     lastName:string;
-    password: string;
     type:string;
     plan:number;
     created:Date;
     updated:Date;
 
-  }  
+}

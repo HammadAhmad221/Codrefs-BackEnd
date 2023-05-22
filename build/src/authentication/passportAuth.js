@@ -18,12 +18,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_1 = require("../users/user");
 const typescript_ioc_1 = require("typescript-ioc");
 const passport_1 = __importDefault(require("passport"));
-const passport_local_1 = require("passport-local");
 const passport_google_oauth2_1 = require("passport-google-oauth2");
+const passport_local_1 = require("passport-local");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const user_1 = require("../database/mongodb/schema/user");
 passport_1.default.use(new passport_google_oauth2_1.Strategy({
     clientID: '364608439523-7kbcap43n3sk2d1ldvc7h50b0ju4o4u4.apps.googleusercontent.com',
     clientSecret: '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',

@@ -11,9 +11,6 @@ import passport from "../passport/passport.strategies";
 import { setupGoogleAuthMiddleware } from './middlewares/google.auth.middleware';
 
 
-
-
-
 const app = express();
 
 app.use(session({

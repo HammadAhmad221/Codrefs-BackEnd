@@ -1,10 +1,14 @@
 // src/app.ts
+import dotenv from 'dotenv';
+dotenv.config();
 import express from "express";
+import session from 'express-session';
 import { RegisterRoutes } from "../../build/routes";
 import * as swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "../../build/swagger.json";
 import { setupMiddlewares } from "./setup.middlewares";
 import passport from "../passport/passport.strategies";
+<<<<<<< HEAD
 //import session from 'express-session';
 
 const app = express();
@@ -13,14 +17,27 @@ const app = express();
   resave: false,
   saveUninitialized: false
 }));*/
+=======
+import { setupGoogleAuthMiddleware } from './middlewares/google.auth.middleware';
+
+
+
+
+
+const app = express();
+
+app.use(session({
+  secret: process.env.SESSION_SECRET||'', // Replace with a secure secret key
+  resave: false,
+  saveUninitialized: false
+}));
+ 
+>>>>>>> d550c8a18b0d0549f8afae7196e70ddb76925197
 app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.session());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/google',passport.authenticate('google', { scope: ['profile'] }));
-
-
-
+setupGoogleAuthMiddleware(app);
 setupMiddlewares(app);
 
 RegisterRoutes(app);

@@ -33,6 +33,7 @@ const swaggerUi = __importStar(require("swagger-ui-express"));
 const swaggerDocument = __importStar(require("../../build/swagger.json"));
 const setup_middlewares_1 = require("./setup.middlewares");
 const passport_strategies_1 = __importDefault(require("../passport/passport.strategies"));
+<<<<<<< HEAD
 //import session from 'express-session';
 const app = (0, express_1.default)();
 /*app.use(session({
@@ -40,10 +41,33 @@ const app = (0, express_1.default)();
   resave: false,
   saveUninitialized: false
 }));*/
+=======
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+console.log("Google Client ID: ", process.env.GOOGLE_CLIENT_ID);
+const app = (0, express_1.default)();
+>>>>>>> d550c8a18b0d0549f8afae7196e70ddb76925197
 app.use(passport_strategies_1.default.initialize());
 //app.use(passport.session());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/google', passport_strategies_1.default.authenticate('google', { scope: ['profile'] }));
+app.use('/google', passport_strategies_1.default.authenticate('google', { scope: ['profile', 'email'] }, (response) => {
+    console.log("Response in direct callback:", response);
+}));
+app.use('/auth/login/google/callback', passport_strategies_1.default.authenticate('google', {
+    successRedirect: '/google/success',
+    failureRedirect: '/google/error',
+}));
+app.get('/googe/success', (res) => {
+    // Access the user's information from the request object
+    // const email = req.user.email;
+    // const profileData = req.user.profileData;
+    // Handle the retrieved user information as needed
+    res.send('Authentication successful!');
+});
+app.get('/google/error', (req, res) => {
+    console.log("Req", req);
+    res.send('Authentication failed!');
+});
 (0, setup_middlewares_1.setupMiddlewares)(app);
 (0, routes_1.RegisterRoutes)(app);
 //app.use(express.json());

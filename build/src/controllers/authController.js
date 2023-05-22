@@ -28,6 +28,7 @@ exports.AuthController = void 0;
 const tsoa_1 = require("tsoa");
 const typescript_ioc_1 = require("typescript-ioc");
 const user_1 = require("../users/user");
+// import passport from '../passport/passport.strategies';
 const passportAuth_1 = __importDefault(require("../authentication/passportAuth"));
 let AuthController = class AuthController extends tsoa_1.Controller {
     signup(user) {
@@ -43,8 +44,30 @@ let AuthController = class AuthController extends tsoa_1.Controller {
         });
     }
     googleLogin() {
+<<<<<<< HEAD
         console.log("on google login");
         return this.authService.googleLogin();
+=======
+        return __awaiter(this, void 0, void 0, function* () {
+            /*
+            passport.authenticate('google', { scope: ['profile', 'email'] }, (error: any, user: any, info: any) => {
+              if (error) {
+                // Handle authentication error
+                return console.log("Error",{ message: 'Authentication Error' },error);
+              }
+        
+              if (!user) {
+                // Handle authentication failure
+                console.log("Failed",{ message: 'Authentication Failed' });
+              }
+        
+              // Handle successful authentication
+              // You can redirect to a success page or return an authentication token
+              console.log("Success",{ message: 'Authentication Successful' },info);
+            })(req, resp);
+          */
+        });
+>>>>>>> d550c8a18b0d0549f8afae7196e70ddb76925197
     }
     googleLoginCallback() {
         return this.authService.googleLoginCallback();

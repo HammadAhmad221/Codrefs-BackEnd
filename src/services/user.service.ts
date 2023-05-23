@@ -41,7 +41,7 @@ export class UserService {
                 let loginResponse:ILoginResponse={
                     id:userResponse._id,
                     token: userToken,
-                    email: userResponse.company,
+                    email: userResponse.email,
                     company: userResponse.company,
                     firstName: userResponse.firstName,
                     lastName: userResponse.lastName,

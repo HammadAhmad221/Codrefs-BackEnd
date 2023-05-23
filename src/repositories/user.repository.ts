@@ -41,6 +41,7 @@ export class UserRepository{
                 lastName: "",
                 password:password,
                 type: USER_TYPES.ADMIN,
+                author:null,
                 plan: PLANS.BASIC,
                 created: new Date(),
                 updated: new Date()

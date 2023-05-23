@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { PLANS, USER_TYPES } from "../constants/constants";
 import { IUser } from "../models/user.model";
 import moment from 'moment';
@@ -10,6 +11,7 @@ export class User implements IUser{
     password: string;
     type:string;
     plan:number;
+    author: ObjectId | null;
     created: Date;
     updated:Date;
     
@@ -22,9 +24,11 @@ export class User implements IUser{
         this.password=jsonObject.password ?? '';
         this.type=jsonObject.type ?? USER_TYPES.ADMIN;
         this.plan=jsonObject.plan ?? PLANS.BASIC;
+        this.author=jsonObject.author ?? null;
         this.created=jsonObject.created ?? moment().utc().toDate();
         this.updated=jsonObject.updated ?? moment().utc().toDate();
     }
+    
     
 }
 

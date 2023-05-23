@@ -10,3 +10,8 @@ export const PLANS={
     PREMIUM:2
 };
  
+export const SOURCE_CONTROL={
+    GITHUB:10,
+    BITBUCKET:11,
+    GITLAB:12
+};

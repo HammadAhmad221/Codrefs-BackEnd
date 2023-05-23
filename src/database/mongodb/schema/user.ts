@@ -12,6 +12,7 @@ const userSchema = new Schema<User>({
     password: {type: String, required:true},
     type:{type: String, required:true,default:USER_TYPES.ADMIN},
     plan:{type: Number, required:true,default:PLANS.BASIC},
+    author:{type:Schema.Types.ObjectId,ref:"User"},
     created:{type:Date,default:new Date()},
     updated:{type:Date,default:new Date()}
     });

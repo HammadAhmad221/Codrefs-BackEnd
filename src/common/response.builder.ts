@@ -12,4 +12,10 @@ export default class ResponseBuilder{
     errorResponse(message:string):any{
         return {success:false,message:message};
     }
+    invalidInputResponse():any{
+        return {success:false,message:"Invalid input parameters"};
+    }
+    internalServerErrorResponse():any{
+        return {success:false,message:"Internal server error"};
+    }
 }

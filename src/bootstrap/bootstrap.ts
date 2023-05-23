@@ -21,9 +21,6 @@ const app = express();
 import { setupGoogleAuthMiddleware } from './middlewares/google.auth.middleware';
 
 
-
-
-
 const app = express();
 
 app.use(session({

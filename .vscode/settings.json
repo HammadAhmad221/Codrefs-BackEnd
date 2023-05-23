@@ -1,0 +1,5 @@
+{
+    "gitHistory.alwaysPromptRepositoryPicker": true,
+    "git.allowForcePush": true,
+    "git.alwaysShowStagedChangesResourceGroup": true
+}

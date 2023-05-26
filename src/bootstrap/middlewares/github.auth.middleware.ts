@@ -1,4 +1,4 @@
-import passport from "../../passport/github.stratigy";
+import passport from "../../passport/passport.strategies";
 
 export function setupGithubAuthMiddleware(app){
     app.use('/github',passport.authenticate('github', { scope: ['profile'] },(response:any)=>{

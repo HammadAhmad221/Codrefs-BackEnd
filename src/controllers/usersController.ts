@@ -1,13 +1,6 @@
 
 import { UserService } from "../services/user.service";
-//import DatabaseService from ".././services/database.service";
-import {
-  Body,
-    Controller,
-    Get,
-    Post,
-    Route,
-  } from "tsoa";
+import {Body,Controller,Get,Post,Route,Delete,Path} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { ILoginRequest } from "../models/requests/login.request";
 import { ISignupRequest } from "../models/requests/signup.request";
@@ -36,9 +29,10 @@ import { ISignupRequest } from "../models/requests/signup.request";
     public async signup(@Body() request: ISignupRequest): Promise<any> {
       return this.userService?.signupWithEmail(request);
     }
-  
-  
-  
+    @Delete('/deleteuser/{id}')
+    public async deleteProject(@Path() id: string): Promise<any> {
+      return this.userService?.deleteUserById(id);
+    }
   }
 
   

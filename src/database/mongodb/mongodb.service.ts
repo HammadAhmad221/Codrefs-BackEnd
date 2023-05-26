@@ -23,7 +23,9 @@ export class MongodbService {
         this.CONNECTION = await mongoose.
             connect(process.env.MONGO_DB_CONNECTION_STRING || "", this.options).
             then(c => c).
-            catch(err => console.log(err));
+            catch(err => console.log(err)).finally(()=>{
+                console.log("DB Connected");
+            });
 
         if (!this.CONNECTION) throw ('MongoDB Coonection Problem');
         return this.CONNECTION;

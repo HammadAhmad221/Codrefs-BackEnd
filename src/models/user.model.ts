@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 
 
 export interface IUser {
@@ -9,6 +10,7 @@ export interface IUser {
     password: string;
     type:string;
     plan:number;
+    author:ObjectId | null;
     created:Date;
     updated:Date;
 

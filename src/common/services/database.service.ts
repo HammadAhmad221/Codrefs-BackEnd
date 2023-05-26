@@ -2,7 +2,9 @@
 import {Inject, Singleton} from 'typescript-ioc';
 import { MongodbService } from '../../database/mongodb/mongodb.service';
 import { UserModel } from '../../database/mongodb/schema/user';
+import { ProjectModel } from '../../database/mongodb/schema/project';
 import { User } from '../../entities/user';
+import { Project } from '../../entities/project';
 
 @Singleton
 export class DatabaseService{
@@ -56,6 +58,36 @@ export class DatabaseService{
         }
       })
     }
+    createProject(project:Project):Promise<any>{
+      return new Promise(async(resolve,reject)=>{
+        try{
+        let response=await ProjectModel.create(project);
+        resolve(response);
+        }catch(error){
+          reject(error);
+        }
+      })
+    }
 
+     deleteProjectById(id: string): Promise<void> {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await ProjectModel.findByIdAndDelete(id).exec();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
 
+    deleteUserById(id: string): Promise<void> {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await UserModel.findByIdAndDelete(id).exec();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
 }

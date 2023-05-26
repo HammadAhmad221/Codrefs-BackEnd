@@ -41,7 +41,7 @@ export class UserService {
                 let loginResponse:ILoginResponse={
                     id:userResponse._id,
                     token: userToken,
-                    email: userResponse.company,
+                    email: userResponse.email,
                     company: userResponse.company,
                     firstName: userResponse.firstName,
                     lastName: userResponse.lastName,
@@ -115,5 +115,14 @@ export class UserService {
 
 
     }
+
+    async deleteUserById(id: string): Promise<any> {
+        try {
+          await this.userRepository.deleteUserById(id);
+          return this.responseBuilder.successResponse('User deleted successfully');
+        } catch (error) {
+          return this.responseBuilder.errorResponse(error);
+        }
+      }
 
 }

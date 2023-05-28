@@ -127,6 +127,9 @@ export class UserService {
       }
 
       async subscribeWithEmail(email:string):Promise<any>{
+        if(!Utils.isValidEmailAddress(email)){
+            return this.responseBuilder.errorResponse("invalid email address");
+        }
         try {
             await this.userRepository.addSubscriptionWithEmail(email);
             return this.responseBuilder.successResponse('Thank you for subscribing! Get ready to receive exclusive content, news, and special promotions straight to your inbox.');

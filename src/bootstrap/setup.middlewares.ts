@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
 import { appMiddleware } from './middlewares/app.middleware';
@@ -13,7 +13,7 @@ export function setupMiddlewares(app:any){
     
     app.use(cors());
     
-    app.use(helmet());
+    // app.use(helmet());
     
     app.use(morgan('combined'));
     

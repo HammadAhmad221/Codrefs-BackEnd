@@ -16,9 +16,7 @@ passport.use(
       function verify(accessToken, refreshToken,object0, profile, done) {
        
         done(null,profile);
-      }
-    
-    )
+      })
     
   );
 //used passportGithub Stratigy

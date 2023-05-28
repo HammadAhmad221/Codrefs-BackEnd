@@ -7,6 +7,7 @@ export class MongodbService {
 
     CONNECTION;
     options = this.getOptions();
+   private connectionStrin=process.env.NODE_ENV=='production'?process.env.MONGODB_URI_PROD:process.env.MONGODB_URI_STAGE;
 
     getOptions() {
         let options;
@@ -21,7 +22,7 @@ export class MongodbService {
     async connect() {
         if (this.CONNECTION) return this.CONNECTION;
         this.CONNECTION = await mongoose.
-            connect(process.env.MONGO_DB_CONNECTION_STRING || "", this.options).
+            connect(this.connectionStrin || "", this.options).
             then(c => c).
             catch(err => console.log(err)).finally(()=>{
                 console.log("DB Connected");

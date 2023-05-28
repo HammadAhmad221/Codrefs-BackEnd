@@ -4,6 +4,7 @@ import { User } from "../entities/user";
 import bcrypt from 'bcrypt';
 import { DatabaseService } from "../common/services/database.service";
 import { Inject } from "typescript-ioc";
+import { Subscription } from "../entities/subscription";
 
 export class UserRepository{
 
@@ -69,6 +70,10 @@ export class UserRepository{
     }
     deleteUserById(id: string): Promise<void> {
         return this.databaseService.deleteUserById(id);
+      }
+
+      addSubscriptionWithEmail(email: string): Promise<boolean> {
+        return this.databaseService.createEmailSubscription(new Subscription(email));
       }
 
 }

@@ -4,6 +4,7 @@ import {Body,Controller,Get,Post,Route,Delete,Path} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { ILoginRequest } from "../models/requests/login.request";
 import { ISignupRequest } from "../models/requests/signup.request";
+import { ISubscriptionRequest } from "../models/requests/subscription.request";
    
   
   @Route("/users")
@@ -32,6 +33,11 @@ import { ISignupRequest } from "../models/requests/signup.request";
     @Delete('/deleteuser/{id}')
     public async deleteProject(@Path() id: string): Promise<any> {
       return this.userService?.deleteUserById(id);
+    }
+
+    @Post('/subscribe')
+    public async subscribe(@Body() request: ISubscriptionRequest): Promise<any> {
+      return this.userService?.subscribeWithEmail(request.email);
     }
   }
 

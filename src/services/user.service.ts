@@ -15,6 +15,7 @@ export class UserService {
 
     }
 
+    
 
     async loginWithEmailPassword(request: ILoginRequest): Promise<any> {
 
@@ -123,6 +124,15 @@ export class UserService {
         } catch (error) {
           return this.responseBuilder.errorResponse(error);
         }
+      }
+
+      async subscribeWithEmail(email:string):Promise<any>{
+        try {
+            await this.userRepository.addSubscriptionWithEmail(email);
+            return this.responseBuilder.successResponse('Thank you for subscribing! Get ready to receive exclusive content, news, and special promotions straight to your inbox.');
+          } catch (error) {
+            return this.responseBuilder.errorResponse(error);
+          }
       }
 
 }

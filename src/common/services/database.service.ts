@@ -5,6 +5,8 @@ import { UserModel } from '../../database/mongodb/schema/user';
 import { ProjectModel } from '../../database/mongodb/schema/project';
 import { User } from '../../entities/user';
 import { Project } from '../../entities/project';
+import { SubscriptionModel } from '../../database/mongodb/schema/subscription';
+import { Subscription } from '../../entities/subscription';
 
 @Singleton
 export class DatabaseService{
@@ -89,5 +91,19 @@ export class DatabaseService{
           reject(error);
         }
       });
+    }
+
+    createEmailSubscription(subscription:Subscription):Promise<boolean>{
+      return new Promise(async(resolve,reject)=>{
+        try{
+        let response=await SubscriptionModel.create(subscription);
+        if(response){
+          resolve(true);
+        }
+        }catch(error){
+          reject(false);
+        }
+        resolve(false);
+      })
     }
 }

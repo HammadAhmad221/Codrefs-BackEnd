@@ -5,6 +5,7 @@
   "author": "HammadAhmad <hammadchahal123@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@octokit/rest": "^19.0.11",
     "@types/dotenv": "^8.2.0",
     "@types/express-session": "^1.17.7",
     "@types/mongoose": "^5.11.97",
@@ -12,7 +13,9 @@
     "@types/passport-local": "^1.0.35",
     "@types/swagger-ui-dist": "^3.30.1",
     "aws-sdk": "^2.1368.0",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
+    "bitbucket-api": "^0.1.0",
     "body-parser": "^1.20.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -38,9 +41,9 @@
   },
   "scripts": {
     "build": "tsoa spec-and-routes && tsoa swagger && tsc",
-    "build-prod":"NODE_ENV=production tsoa spec-and-routes && tsoa swagger && tsc",
+    "build-prod": "NODE_ENV=production tsoa spec-and-routes && tsoa swagger && tsc",
     "start": "node build/src/server.js",
-    "start-pm2":"npm run build-prod && NODE_ENV=production pm2 start build/src/server.js",
+    "start-pm2": "npm run build-prod && NODE_ENV=production pm2 start build/src/server.js",
     "start-nodemon": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
   },
   "devDependencies": {

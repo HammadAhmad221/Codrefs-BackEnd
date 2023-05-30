@@ -4,7 +4,7 @@ const path = require('path');
 
 @Singleton
 export class MongodbService {
-
+//mongodb:coderefs:Ammar12345678@127.0.0.1:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true
     CONNECTION;
     options = this.getOptions();
    private connectionStrin=process.env.NODE_ENV=='production'?process.env.MONGODB_URI_PROD:process.env.MONGODB_URI_STAGE;

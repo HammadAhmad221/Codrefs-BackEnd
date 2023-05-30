@@ -4,8 +4,12 @@ import fs from 'fs';
 import { Inject } from "typescript-ioc";
 import { ProjectRepository } from "../repositories/project.repository";
 import ResponseBuilder from "../common/response.builder";
-import { IAddProjectRequest } from "../models/requests/addproject.request";
-import { IAddProjectResponce } from "../models/responses/addproject.responce";
+import { IAddProjectRequest } from "../models/requests/addandcloneproject.request";
+import { IAddProjectResponce } from "../models/responses/addandcloneproject.responce";
+import { IListBranchesRequest } from '../models/requests/getlistofbranches.request';
+const { Octokit } = require("@octokit/rest");
+import axios from 'axios';
+
 
 
 export class ProjectService {
@@ -20,13 +24,13 @@ export class ProjectService {
         request.name,
         request.repositoryURL,
         request.accessToken,
-        request.gitusername,
+        request.gitUsername,
         request.branch
       );
-      const { repositoryURL,accessToken,gitusername,branch } = addProjectResponse;
+      const { repositoryURL,accessToken,gitUsername,branch } = addProjectResponse;
        // Clone the repository
-      let auth = { username:gitusername,password:accessToken};
-      await clone({
+      let auth = { username:gitUsername,password:accessToken};
+     clone({
         http,
         fs,
         dir: "/"+addProjectResponse._id,
@@ -35,12 +39,11 @@ export class ProjectService {
         ref:branch,
        onAuth:()=> auth,
       });
-
       let projectResponse: IAddProjectResponce = {
         name: addProjectResponse.name,
         sourceControl: addProjectResponse.sourceControl,
         repositoryURL: addProjectResponse.repositoryURL,
-        gitusername: addProjectResponse.gitusername,
+        gitUsername: addProjectResponse.gitUsername,
         accessToken: addProjectResponse.accessToken,
         branch:addProjectResponse.branch,
         created: addProjectResponse.created,
@@ -61,6 +64,43 @@ export class ProjectService {
       return this.responseBuilder.errorResponse(error);
     }
   }
+
+  async getBranchNames(request:IListBranchesRequest):Promise<any> {
+
+    if(request.platform==='github'){  
+    const octokit = new Octokit({
+      auth:request.accessToken
+    });
+  
+    try {
+      const response = await octokit.rest.repos.listBranches({
+        owner:request.gitUsername,
+        repo:request.repositoryName,
+      });
+  
+      const branchNames = response.data.map((branch) => branch.name);
+      return this.responseBuilder.successResponse(branchNames);
+    } catch (error) {
+      return this.responseBuilder.errorResponse(error);
+    }
+  }
+else{ 
+    const url = `https://api.bitbucket.org/2.0/repositories/${request.gitUsername}/${request.repositoryName}/refs/branches`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${request.accessToken}`,
+        }
+      });
+  
+      const branchNames: string[] = response.data.values.map((branch: any) => branch.name);
+      return this.responseBuilder.successResponse(branchNames);
+    } catch (error) {
+     return this.responseBuilder.errorResponse(error);
+    }
+  }
+
+}
   
 }
 

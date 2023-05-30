@@ -2,6 +2,7 @@ import { clone } from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
 import fs from 'fs';
 import { Inject } from "typescript-ioc";
+import { SOURCE_CONTROL } from "../constants/constants";
 import { ProjectRepository } from "../repositories/project.repository";
 import ResponseBuilder from "../common/response.builder";
 import { IAddProjectRequest } from "../models/requests/addandcloneproject.request";
@@ -67,7 +68,7 @@ export class ProjectService {
 
   async getBranchNames(request:IListBranchesRequest):Promise<any> {
 
-    if(request.platform==='github'){  
+    if(request.versionControl===SOURCE_CONTROL.GITHUB){  
     const octokit = new Octokit({
       auth:request.accessToken
     });
@@ -84,7 +85,7 @@ export class ProjectService {
       return this.responseBuilder.errorResponse(error);
     }
   }
-else{ 
+if(request.versionControl=== SOURCE_CONTROL.BITBUCKET){ 
     const url = `https://api.bitbucket.org/2.0/repositories/${request.gitUsername}/${request.repositoryName}/refs/branches`;
     try {
       const response = await axios.get(url, {

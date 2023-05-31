@@ -3,7 +3,7 @@ import cors from 'cors';
 // import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
-import { appMiddleware } from './middlewares/app.middleware';
+//import { appMiddleware } from './middlewares/app.middleware';
 
 
 export function setupMiddlewares(app:any){
@@ -19,7 +19,7 @@ export function setupMiddlewares(app:any){
     
     app.use(compression());
     
-    app.use(appMiddleware);
+  //  app.use(appMiddleware);
     
     
 }

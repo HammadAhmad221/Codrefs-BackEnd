@@ -1,4 +1,11 @@
 {
+	"securityDefinitions": {
+		"bearerAuth": {
+		  "type": "apiKey",
+		  "name": "Authorization",
+		  "in": "header"
+		}
+	  },
 	"components": {
 		"examples": {},
 		"headers": {},
@@ -17,14 +24,14 @@
 		"securitySchemes": {}
 	},
 	"info": {
-		"title": "tsoa-project",
+		"title": "CodeRefs",
 		"version": "1.0.0",
 		"license": {
 			"name": "MIT"
 		},
 		"contact": {
-			"name": "HammadAhmad ",
-			"email": "hammadchahal123@gmail.com"
+			"name": "Ammaar",
+			"email": "ammaarsaleem2017@gmail.com"
 		}
 	},
 	"openapi": "3.0.0",

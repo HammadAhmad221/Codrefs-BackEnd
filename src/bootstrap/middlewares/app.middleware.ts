@@ -5,7 +5,7 @@ import { validateAuthHeader } from '../../authentication';
 export function appMiddleware(req: Request, res: Response, next: NextFunction) {
   
   
-  let isValid=validateAuthHeader(req.headers.authorization);
+  let isValid=validateAuthHeader(req);
   
   if(isValid==false){
     res.status(403).send('Access denied');

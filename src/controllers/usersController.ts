@@ -1,11 +1,13 @@
 
 import { UserService } from "../services/user.service";
-import {Body,Controller,Get,Post,Route,Delete,Path} from "tsoa";
+import {Body,Controller,Get,Post,Route,Delete,Path, Middlewares, Request} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { ILoginRequest } from "../models/requests/login.request";
 import { ISignupRequest } from "../models/requests/signup.request";
 import { ISubscriptionRequest } from "../models/requests/subscription.request";
 import { Types } from "mongoose";
+import { appMiddleware } from "../bootstrap/middlewares/app.middleware";
+import { Request as ExpressRequest } from 'express';
    
   
   @Route("/users")
@@ -16,10 +18,11 @@ import { Types } from "mongoose";
     
 
     @Get("/test")
+    @Middlewares(appMiddleware)
     public async testAPI(
-      
+      @Request() request:ExpressRequest
     ): Promise<any> {
-      return {test:true};
+      return {test:true,session:request.user};
     }
   
     @Post('/login')

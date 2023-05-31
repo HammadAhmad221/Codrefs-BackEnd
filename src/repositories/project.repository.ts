@@ -36,9 +36,11 @@ export class ProjectRepository{
 
         });
 }
+
 deleteProjectById(id: string): Promise<void> {
   return this.databaseService.deleteProjectById(id);
 }
+
 async getProjectsByAuthor(author: Types.ObjectId): Promise<any> {
     try {
       const projects = await this.databaseService.getProjectsByAuthor(author);

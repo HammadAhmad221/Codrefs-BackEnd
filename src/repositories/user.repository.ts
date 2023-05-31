@@ -47,6 +47,7 @@ export class UserRepository{
                 plan: PLANS.BASIC,
                 created: new Date(),
                 updated: new Date()
+                
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);

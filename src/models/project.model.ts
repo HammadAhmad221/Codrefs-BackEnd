@@ -1,11 +1,11 @@
-import { ObjectId } from "mongoose";
+import {  Types } from "mongoose";
 
 export interface IProject{
     name:string;
     sourceControl:number;
     repositoryURL:string;
     accessToken:string;
-    author:ObjectId | null;
+    author:Types.ObjectId | null;
     gitusername:string;
     branch:string,
     created:Date;

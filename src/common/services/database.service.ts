@@ -7,6 +7,7 @@ import { User } from '../../entities/user';
 import { Project } from '../../entities/project';
 import { SubscriptionModel } from '../../database/mongodb/schema/subscription';
 import { Subscription } from '../../entities/subscription';
+import { Types } from 'mongoose';
 
 @Singleton
 export class DatabaseService{
@@ -106,4 +107,13 @@ export class DatabaseService{
         resolve(false);
       })
     }
+    async findProjectByAuthor(author:Types.ObjectId): Promise<any> {
+      try {
+        const projects = await ProjectModel.find({author:author}).exec();
+        return projects;
+      } catch (error) {
+        throw error;
+      }
+    }
+    
 }

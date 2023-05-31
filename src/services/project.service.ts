@@ -1,6 +1,6 @@
-import { clone } from 'isomorphic-git';
-import http from 'isomorphic-git/http/node';
-import fs from 'fs';
+//import { clone } from 'isomorphic-git';
+//import http from 'isomorphic-git/http/node';
+//import fs from 'fs';
 import { Inject } from "typescript-ioc";
 import { SOURCE_CONTROL } from "../constants/constants";
 import { ProjectRepository } from "../repositories/project.repository";
@@ -10,6 +10,7 @@ import { IAddProjectResponce } from "../models/responses/addandcloneproject.resp
 import { IListBranchesRequest } from '../models/requests/getlistofbranches.request';
 const { Octokit } = require("@octokit/rest");
 import axios from 'axios';
+import { Types } from "mongoose";
 
 
 
@@ -28,8 +29,7 @@ export class ProjectService {
         request.gitUsername,
         request.branch
       );
-      const { repositoryURL,accessToken,gitUsername,branch } = addProjectResponse;
-       // Clone the repository
+     /* const { repositoryURL,accessToken,gitUsername,branch } = addProjectResponse;
       let auth = { username:gitUsername,password:accessToken};
      clone({
         http,
@@ -39,7 +39,7 @@ export class ProjectService {
         singleBranch: true,
         ref:branch,
        onAuth:()=> auth,
-      });
+      });*/
       let projectResponse: IAddProjectResponce = {
         name: addProjectResponse.name,
         sourceControl: addProjectResponse.sourceControl,
@@ -65,6 +65,16 @@ export class ProjectService {
       return this.responseBuilder.errorResponse(error);
     }
   }
+  async getProjectByAuthor(author: Types.ObjectId): Promise<any> {
+    try {
+      //const query = { author:  author }; // Assuming 'author' is the field name in the ProjectModel schema
+      const projects = await this.projectRepository.findProjectByAuthor(author);
+      return this.responseBuilder.successResponse(projects);
+    } catch (error) {
+      return this.responseBuilder.errorResponse(error);
+    }
+  }
+  
 
   async getBranchNames(request:IListBranchesRequest):Promise<any> {
 

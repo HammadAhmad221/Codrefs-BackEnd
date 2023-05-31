@@ -1,9 +1,10 @@
 
 import { ProjectService } from "../services/project.service";
-import {Body,Controller,Post,Route,Delete,Path} from "tsoa";
+import {Body,Controller,Post,Route,Delete,Path, Get} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { IAddProjectRequest } from "../models/requests/addandcloneproject.request";
 import { IListBranchesRequest } from "../models/requests/getlistofbranches.request";
+import { Types } from "mongoose";
    
   
   @Route("/projects")
@@ -25,6 +26,12 @@ import { IListBranchesRequest } from "../models/requests/getlistofbranches.reque
     public async listBranches(@Body() request:IListBranchesRequest):Promise<any>{
       return this.projectService?.getBranchNames(request);
     }
+    @Get('/findprojects/{author}')
+    public async findProjects(@Path() author: Types.ObjectId): Promise<any> {
+        return this.projectService?.getProjectByAuthor(author);
+    }
+    
+    
   
   }
 

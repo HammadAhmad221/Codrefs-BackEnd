@@ -2,6 +2,7 @@ import { Project } from "../entities/project";
 import { DatabaseService } from "../common/services/database.service";
 import { Inject } from "typescript-ioc";
 import { SOURCE_CONTROL } from "../constants/constants";
+import {  Types } from "mongoose";
 
 export class ProjectRepository{
     constructor(@Inject private databaseService:DatabaseService){}
@@ -15,7 +16,7 @@ export class ProjectRepository{
                 sourceControl:SOURCE_CONTROL.GITHUB,
                 repositoryURL:repositoryURL,
                 accessToken:accessToken,
-                author:null,
+                author:new Types.ObjectId('6470844f446483348c608c3a'),
                 gitusername:gitusername,
                 branch:branch,
                 created: new Date(),
@@ -38,5 +39,14 @@ export class ProjectRepository{
 deleteProjectById(id: string): Promise<void> {
   return this.databaseService.deleteProjectById(id);
 }
-
+async findProjectByAuthor(author: Types.ObjectId): Promise<any> {
+    try {
+      //const query = { author:author }; // Assuming 'author' is the field name in the ProjectModel schema
+      const projects = await this.databaseService.findProjectByAuthor(author);
+      return projects;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
 }

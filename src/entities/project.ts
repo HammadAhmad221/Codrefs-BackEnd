@@ -1,14 +1,14 @@
 import moment from "moment";
 import { IProject } from "../models/project.model";
 import { SOURCE_CONTROL } from "../constants/constants";
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 
 export class Project implements IProject{
     name: string;
     sourceControl: number;
     repositoryURL: string;
     accessToken: string;
-    author: ObjectId | null;
+    author: Types.ObjectId | null;
     gitusername: string;
     branch: string;
     created: Date;

@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import { PLANS, USER_TYPES } from "../constants/constants";
 import { IUser } from "../models/user.model";
 import moment from 'moment';
@@ -11,7 +11,7 @@ export class User implements IUser{
     password: string;
     type:string;
     plan:number;
-    author: ObjectId | null;
+    author: Types.ObjectId | null;
     created: Date;
     updated:Date;
     

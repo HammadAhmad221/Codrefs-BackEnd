@@ -26,13 +26,12 @@ import { Types } from "mongoose";
     public async listBranches(@Body() request:IListBranchesRequest):Promise<any>{
       return this.projectService?.getBranchNames(request);
     }
-    @Get('/findprojects/{author}')
-    public async findProjects(@Path() author: Types.ObjectId): Promise<any> {
-        return this.projectService?.getProjectByAuthor(author);
+    @Get('/getprojects/{author}')
+    public async getProjects(@Path() author: Types.ObjectId): Promise<any> {
+        return this.projectService?.getProjectsByAuthor(author);
     }
     
     
-  
   }
 
   

@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 
 
 export interface IUser {
@@ -10,7 +10,7 @@ export interface IUser {
     password: string;
     type:string;
     plan:number;
-    author:ObjectId | null;
+    author:Types.ObjectId | null;
     created:Date;
     updated:Date;
 

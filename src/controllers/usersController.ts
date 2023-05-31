@@ -5,6 +5,7 @@ import { Inject } from "typescript-ioc";
 import { ILoginRequest } from "../models/requests/login.request";
 import { ISignupRequest } from "../models/requests/signup.request";
 import { ISubscriptionRequest } from "../models/requests/subscription.request";
+import { Types } from "mongoose";
    
   
   @Route("/users")
@@ -38,6 +39,10 @@ import { ISubscriptionRequest } from "../models/requests/subscription.request";
     @Post('/subscribe')
     public async subscribe(@Body() request: ISubscriptionRequest): Promise<any> {
       return this.userService?.subscribeWithEmail(request.email);
+    }
+    @Get('/getusers/{author}')
+    public async getUsers(@Path() author: Types.ObjectId): Promise<any> {
+        return this.userService?.getUsersByAuthor(author);
     }
   }
 

@@ -39,10 +39,9 @@ export class ProjectRepository{
 deleteProjectById(id: string): Promise<void> {
   return this.databaseService.deleteProjectById(id);
 }
-async findProjectByAuthor(author: Types.ObjectId): Promise<any> {
+async getProjectsByAuthor(author: Types.ObjectId): Promise<any> {
     try {
-      //const query = { author:author }; // Assuming 'author' is the field name in the ProjectModel schema
-      const projects = await this.databaseService.findProjectByAuthor(author);
+      const projects = await this.databaseService.getProjectsByAuthor(author);
       return projects;
     } catch (error) {
       throw error;

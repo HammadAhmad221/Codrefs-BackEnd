@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { DatabaseService } from "../common/services/database.service";
 import { Inject } from "typescript-ioc";
 import { Subscription } from "../entities/subscription";
+import { Types } from "mongoose";
 
 export class UserRepository{
 
@@ -42,7 +43,7 @@ export class UserRepository{
                 lastName: "",
                 password:password,
                 type: USER_TYPES.ADMIN,
-                author:null,
+                author:new Types.ObjectId('6470844f446483348c608c3a'),
                 plan: PLANS.BASIC,
                 created: new Date(),
                 updated: new Date()
@@ -74,6 +75,15 @@ export class UserRepository{
 
       addSubscriptionWithEmail(email: string): Promise<boolean> {
         return this.databaseService.createEmailSubscription(new Subscription(email));
+      }
+
+      async getUsersByAuthor(author: Types.ObjectId): Promise<any> {
+        try {
+          const users = await this.databaseService.getUsersByAuthor(author);
+          return users;
+        } catch (error) {
+          throw error;
+        }
       }
 
 }

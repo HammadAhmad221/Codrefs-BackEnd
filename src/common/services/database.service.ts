@@ -107,9 +107,17 @@ export class DatabaseService{
         resolve(false);
       })
     }
-    async findProjectByAuthor(author:Types.ObjectId): Promise<any> {
+    async getProjectsByAuthor(author:Types.ObjectId): Promise<any> {
       try {
         const projects = await ProjectModel.find({author:author}).exec();
+        return projects;
+      } catch (error) {
+        throw error;
+      }
+    }
+    async getUsersByAuthor(author:Types.ObjectId): Promise<any> {
+      try {
+        const projects = await UserModel.find({author:author}).exec();
         return projects;
       } catch (error) {
         throw error;

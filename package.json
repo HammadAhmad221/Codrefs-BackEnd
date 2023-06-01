@@ -1,8 +1,8 @@
 {
-  "name": "tsoa-project",
+  "name": "coderefs",
   "version": "1.0.0",
   "main": "build/src/server.js",
-  "author": "HammadAhmad <hammadchahal123@gmail.com>",
+  "author": "Ammaar <ammaarsaleem2017@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@octokit/rest": "^19.0.11",

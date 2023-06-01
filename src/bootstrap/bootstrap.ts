@@ -11,6 +11,7 @@ import { setupGoogleAuthMiddleware } from './middlewares/google.auth.middleware'
 import { setupGithubAuthMiddleware } from './middlewares/github.auth.middleware';
 
 
+
 const app = express();
 
 app.use(session({
@@ -18,6 +19,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
  
 app.use(passport.initialize());
 app.use(passport.session());

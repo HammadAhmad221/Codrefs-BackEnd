@@ -1,13 +1,17 @@
 
 import { UserService } from "../services/user.service";
-import {Body,Controller,Get,Post,Route,Delete,Path, Middlewares, Request} from "tsoa";
+import {Body,Controller,Get,Post,Route,Delete,Path, Request,Security, Response} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { ILoginRequest } from "../models/requests/login.request";
 import { ISignupRequest } from "../models/requests/signup.request";
 import { ISubscriptionRequest } from "../models/requests/subscription.request";
 import { Types } from "mongoose";
-import { appMiddleware } from "../bootstrap/middlewares/app.middleware";
+
 import { Request as ExpressRequest } from 'express';
+import { IUserSession } from "../models/user.session";
+import { ErrorResponseModel } from "../models/responses/error.response.model";
+
+
    
   
   @Route("/users")
@@ -18,11 +22,12 @@ import { Request as ExpressRequest } from 'express';
     
 
     @Get("/test")
-    @Middlewares(appMiddleware)
+    @Security('bearerAuth')
     public async testAPI(
-      @Request() request:ExpressRequest
+    @Request() request:ExpressRequest
     ): Promise<any> {
-      return {test:true,session:request.user};
+      let userSession:IUserSession|undefined=request.user as IUserSession;
+      return {test:true,session:userSession.id};
     }
   
     @Post('/login')

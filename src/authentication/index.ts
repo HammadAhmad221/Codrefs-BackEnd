@@ -1,25 +1,25 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request } from 'express';
-export function validateAuthHeader(req:Request):boolean{
+import { IUserSession } from '../models/user.session';
+export function validateAuthHeader(req:Request):IUserSession|null{
      let authHeader=req.headers.authorization ?? null;
      
     if(authHeader==null || authHeader==""){
-        return false;
+        return null;
     }
 
     if (authHeader.startsWith('Bearer ')) {
         const token = authHeader.substring(7); // Extract token without 'Bearer ' prefix
     
     
-     let tokenResult=verifyToken(token);
+     let tokenResult:IUserSession=verifyToken(token);
 
     if(tokenResult!=null){
-        req.user=tokenResult;
-        return true;
+        return tokenResult;
     }
 
     }
-    return false;
+    return null;
 }
 
 function verifyToken(token: string): any {

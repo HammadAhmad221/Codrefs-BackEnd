@@ -4,13 +4,32 @@
     "controllerPathGlobs": ["src/**/*Controller.ts"],
     "spec": {
       "outputDirectory": "./build",
-      "specVersion": 3
+      "specVersion": 3,
+      "securityDefinitions": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ]
     },
     "routes": {
       "routesDir": "./build",
-      "template": "./src/tsoa_templates/route.hbs"
+      "template": "./src/tsoa_templates/route.hbs",
+      "authenticationModule": "./src/bootstrap/middlewares/app.middleware.ts"
     },
     "ioc": {
     }
+
+
+
+
+
+
   }
   

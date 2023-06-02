@@ -7,7 +7,7 @@ import {  Types } from "mongoose";
 export class ProjectRepository{
     constructor(@Inject private databaseService:DatabaseService){}
   
-    addProject(name:string,repositoryURL:string,accessToken:string,gitusername:string,branch:string):Promise<any>{
+    addProject(name:string,repositoryURL:string,accessToken:string,gitusername:string,branch:string,author:string):Promise<any>{
         return new Promise(async (resolve,reject)=>{
 
             let projectModel={
@@ -16,7 +16,7 @@ export class ProjectRepository{
                 sourceControl:SOURCE_CONTROL.GITHUB,
                 repositoryURL:repositoryURL,
                 accessToken:accessToken,
-                author:new Types.ObjectId('6470844f446483348c608c3a'),
+                author:new Types.ObjectId(author),
                 gitusername:gitusername,
                 branch:branch,
                 created: new Date(),

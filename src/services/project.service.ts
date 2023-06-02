@@ -11,6 +11,7 @@ import { IListBranchesRequest } from '../models/requests/getlistofbranches.reque
 const { Octokit } = require("@octokit/rest");
 import axios from 'axios';
 import { Types } from "mongoose";
+import { IUserSession } from '../models/user.session';
 
 
 
@@ -20,14 +21,15 @@ export class ProjectService {
     @Inject private responseBuilder: ResponseBuilder
   ) {}
 
-  async addAndCloneProject(request: IAddProjectRequest): Promise<any> {
+  async addAndCloneProject(request: IAddProjectRequest,session:IUserSession): Promise<any> {
     try {
       let addProjectResponse: any = await this.projectRepository.addProject(
         request.name,
         request.repositoryURL,
         request.accessToken,
         request.gitUsername,
-        request.branch
+        request.branch,
+        session.id
       );
       const { repositoryURL,accessToken,gitUsername,branch } = addProjectResponse;
       let auth = { username:gitUsername,password:accessToken};
@@ -101,9 +103,9 @@ if(request.versionControl=== SOURCE_CONTROL.BITBUCKET){
     }
   }
 }
-  async getProjectsByAuthor(author: Types.ObjectId): Promise<any> {
+  async getProjectsByAuthor(session:IUserSession): Promise<any> {
   try {
-    const projects = await this.projectRepository.getProjectsByAuthor(author);
+    const projects = await this.projectRepository.getProjectsByAuthor(new Types.ObjectId(session.id));
     return this.responseBuilder.successResponse(projects);
   } catch (error) {
     return this.responseBuilder.errorResponse(error);

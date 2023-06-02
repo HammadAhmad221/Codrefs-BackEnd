@@ -1,15 +1,14 @@
 
 import { UserService } from "../services/user.service";
-import {Body,Controller,Get,Post,Route,Delete,Path, Request,Security, Response} from "tsoa";
+import {Body,Controller,Get,Post,Route,Delete,Path, Request,Security} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { ILoginRequest } from "../models/requests/login.request";
 import { ISignupRequest } from "../models/requests/signup.request";
 import { ISubscriptionRequest } from "../models/requests/subscription.request";
-import { Types } from "mongoose";
+
 
 import { Request as ExpressRequest } from 'express';
 import { IUserSession } from "../models/user.session";
-import { ErrorResponseModel } from "../models/responses/error.response.model";
 
 
    
@@ -48,9 +47,11 @@ import { ErrorResponseModel } from "../models/responses/error.response.model";
     public async subscribe(@Body() request: ISubscriptionRequest): Promise<any> {
       return this.userService?.subscribeWithEmail(request.email);
     }
-    @Get('/getusers/{author}')
-    public async getUsers(@Path() author: Types.ObjectId): Promise<any> {
-        return this.userService?.getUsersByAuthor(author);
+    @Get('/getusers')
+    @Security('bearerAuth')
+    public async getUsers(@Request() request:ExpressRequest): Promise<any> {
+       let userSession:IUserSession|undefined=request.user as IUserSession;
+        return this.userService?.getUsersByAuthor(userSession);
     }
   }
 

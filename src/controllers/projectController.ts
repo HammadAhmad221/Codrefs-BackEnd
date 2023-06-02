@@ -1,11 +1,11 @@
 
 import { ProjectService } from "../services/project.service";
-import {Body,Controller,Post,Route,Delete,Path, Get} from "tsoa";
+import {Body,Controller,Post,Route,Delete,Path, Get,Security, Request} from "tsoa";
 import { Inject } from "typescript-ioc";
 import { IAddProjectRequest } from "../models/requests/addandcloneproject.request";
 import { IListBranchesRequest } from "../models/requests/getlistofbranches.request";
-import { Types } from "mongoose";
-   
+import { Request as ExpressRequest } from "express";
+import { IUserSession } from "../models/user.session";
   
   @Route("/projects")
   export class ProjectController extends Controller {
@@ -14,8 +14,10 @@ import { Types } from "mongoose";
     private projectService?:ProjectService;
     
     @Post('/addproject')
-    public async buildProject(@Body() request: IAddProjectRequest): Promise<any> {
-      return this.projectService?.addAndCloneProject(request);
+    @Security('bearerAuth')
+    public async buildProject(@Body() body: IAddProjectRequest,@Request() request:ExpressRequest): Promise<any> {
+      let userSession:IUserSession|undefined=request.user as IUserSession;
+      return this.projectService?.addAndCloneProject(body,userSession);
     }
 
     @Delete('/deleteproject/{id}')
@@ -26,9 +28,11 @@ import { Types } from "mongoose";
     public async listBranches(@Body() request:IListBranchesRequest):Promise<any>{
       return this.projectService?.getBranchNames(request);
     }
-    @Get('/getprojects/{author}')
-    public async getProjects(@Path() author: Types.ObjectId): Promise<any> {
-        return this.projectService?.getProjectsByAuthor(author);
+    @Get('/getprojects')
+    @Security('bearerAuth')
+    public async getProjects(@Request() request:ExpressRequest): Promise<any> {
+      let userSession:IUserSession|undefined=request.user as IUserSession;
+        return this.projectService?.getProjectsByAuthor(userSession);
     }
     
     

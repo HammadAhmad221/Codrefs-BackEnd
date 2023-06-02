@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import { ISignupRequest } from "../models/requests/signup.request";
 import { IUserToken } from "../models/user.token";
 import { Types } from "mongoose";
+import { IUserSession } from "../models/user.session";
 
 export class UserService {
 
@@ -139,9 +140,9 @@ export class UserService {
           }
       }
 
-      async getUsersByAuthor(author: Types.ObjectId): Promise<any> {
+      async getUsersByAuthor(session:IUserSession): Promise<any> {
         try {
-          const users = await this.userRepository.getUsersByAuthor(author);
+          const users = await this.userRepository.getUsersByAuthor(new Types.ObjectId(session.id));
           return this.responseBuilder.successResponse(users);
         } catch (error) {
           return this.responseBuilder.errorResponse(error);

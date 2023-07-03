@@ -8,7 +8,7 @@ const projectSchema = new Schema<Project>({
     repositoryURL: {type: String,unique:true},
     accessToken: {type: String},
     author: {type: Schema.Types.ObjectId,ref:"User"},
-    gitusername: {type: String},
+    gitUsername: {type: String},
     branch:{type:String},
     created: {type: Date},
     updated: {type: Date},

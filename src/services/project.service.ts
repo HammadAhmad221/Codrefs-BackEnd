@@ -33,10 +33,10 @@ export class ProjectService {
       );
       const { repositoryURL,accessToken,gitUsername,branch } = addProjectResponse;
       let auth = { username:gitUsername,password:accessToken};
-     clone({
+   await  clone({
         http,
         fs,
-        dir: "/"+addProjectResponse._id,
+        dir: "/home/ec2-user/"+addProjectResponse._id,
         url: repositoryURL,
         singleBranch: true,
         ref:branch,

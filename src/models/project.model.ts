@@ -6,7 +6,7 @@ export interface IProject{
     repositoryURL:string;
     accessToken:string;
     author:Types.ObjectId | null;
-    gitusername:string;
+    gitUsername:string;
     branch:string,
     created:Date;
     updated:Date;

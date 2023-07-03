@@ -9,7 +9,7 @@ export class Project implements IProject{
     repositoryURL: string;
     accessToken: string;
     author: Types.ObjectId | null;
-    gitusername: string;
+    gitUsername: string;
     branch: string;
     created: Date;
     updated: Date;
@@ -20,7 +20,7 @@ export class Project implements IProject{
         this.repositoryURL=json.repositoryURL ?? "";
         this.accessToken=json.accessToken ?? "";
         this.author=json.author ?? null;
-        this.gitusername=json.gitusername ?? "";
+        this.gitUsername=json.gitUsername ?? "";
         this.branch=json.branch??"";
         this.created=json.created ?? moment().utc().toDate();
         this.updated=json.updated ?? moment().utc().toDate();

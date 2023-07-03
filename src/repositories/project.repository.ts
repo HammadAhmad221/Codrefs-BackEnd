@@ -17,7 +17,7 @@ export class ProjectRepository{
                 repositoryURL:repositoryURL,
                 accessToken:accessToken,
                 author:new Types.ObjectId(author),
-                gitusername:gitusername,
+                gitUsername:gitusername,
                 branch:branch,
                 created: new Date(),
                 updated: new Date()

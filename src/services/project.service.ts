@@ -1,19 +1,17 @@
-import { clone } from 'isomorphic-git';
-import http from 'isomorphic-git/http/node';
-import fs from 'fs';
+import { clone } from "isomorphic-git";
+import http from "isomorphic-git/http/node";
+import fs from "fs";
 import { Inject } from "typescript-ioc";
 import { SOURCE_CONTROL } from "../constants/constants";
 import { ProjectRepository } from "../repositories/project.repository";
 import ResponseBuilder from "../common/response.builder";
 import { IAddProjectRequest } from "../models/requests/addandcloneproject.request";
 import { IAddProjectResponce } from "../models/responses/addandcloneproject.responce";
-import { IListBranchesRequest } from '../models/requests/getlistofbranches.request';
+import { IListBranchesRequest } from "../models/requests/getlistofbranches.request";
 const { Octokit } = require("@octokit/rest");
-import axios from 'axios';
+import axios from "axios";
 import { Types } from "mongoose";
-import { IUserSession } from '../models/user.session';
-
-
+import { IUserSession } from "../models/user.session";
 
 export class ProjectService {
   constructor(
@@ -21,7 +19,10 @@ export class ProjectService {
     @Inject private responseBuilder: ResponseBuilder
   ) {}
 
-  async addAndCloneProject(request: IAddProjectRequest,session:IUserSession): Promise<any> {
+  async addAndCloneProject(
+    request: IAddProjectRequest,
+    session: IUserSession
+  ): Promise<any> {
     try {
       let addProjectResponse: any = await this.projectRepository.addProject(
         request.name,
@@ -29,18 +30,20 @@ export class ProjectService {
         request.accessToken,
         request.gitUsername,
         request.branch,
-        session.id
+        session.id,
+        request.versionControl
       );
-      const { repositoryURL,accessToken,gitUsername,branch } = addProjectResponse;
-      let auth = { username:gitUsername,password:accessToken};
-     clone({
+      const { repositoryURL, accessToken, gitUsername, branch } =
+        addProjectResponse;
+      let auth = { username: gitUsername, password: accessToken };
+      clone({
         http,
         fs,
-        dir: "/home/ec2-user/"+addProjectResponse._id,
+        dir: "/home/ec2-user/" + addProjectResponse._id,
         url: repositoryURL,
         singleBranch: true,
-        ref:branch,
-       onAuth:()=> auth,
+        ref: branch,
+        onAuth: () => auth,
       });
       let projectResponse: IAddProjectResponce = {
         name: addProjectResponse.name,
@@ -48,7 +51,7 @@ export class ProjectService {
         repositoryURL: addProjectResponse.repositoryURL,
         gitUsername: addProjectResponse.gitUsername,
         accessToken: addProjectResponse.accessToken,
-        branch:addProjectResponse.branch,
+        branch: addProjectResponse.branch,
         created: addProjectResponse.created,
         updated: addProjectResponse.updated,
       };
@@ -62,55 +65,58 @@ export class ProjectService {
   async deleteProjectById(id: string): Promise<any> {
     try {
       await this.projectRepository.deleteProjectById(id);
-      return this.responseBuilder.successResponse('Project deleted successfully');
+      return this.responseBuilder.successResponse(
+        "Project deleted successfully"
+      );
     } catch (error) {
       return this.responseBuilder.errorResponse(error);
     }
   }
 
-  async getBranchNames(request:IListBranchesRequest):Promise<any> {
-
-    if(request.versionControl===SOURCE_CONTROL.GITHUB){  
-    const octokit = new Octokit({
-      auth:request.accessToken
-    });
-  
-    try {
-      const response = await octokit.rest.repos.listBranches({
-        owner:request.gitUsername,
-        repo:request.repositoryName,
+  async getBranchNames(request: IListBranchesRequest): Promise<any> {
+    if (request.versionControl === SOURCE_CONTROL.GITHUB) {
+      const octokit = new Octokit({
+        auth: request.accessToken,
       });
-  
-      const branchNames = response.data.map((branch) => branch.name);
-      return this.responseBuilder.successResponse(branchNames);
+
+      try {
+        const response = await octokit.rest.repos.listBranches({
+          owner: request.gitUsername,
+          repo: request.repositoryName,
+        });
+
+        const branchNames = response.data.map((branch) => branch.name);
+        return this.responseBuilder.successResponse(branchNames);
+      } catch (error) {
+        return this.responseBuilder.errorResponse(error);
+      }
+    }
+    if (request.versionControl === SOURCE_CONTROL.BITBUCKET) {
+      const url = `https://api.bitbucket.org/2.0/repositories/${request.gitUsername}/${request.repositoryName}/refs/branches`;
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${request.accessToken}`,
+          },
+        });
+
+        const branchNames: string[] = response.data.values.map(
+          (branch: any) => branch.name
+        );
+        return this.responseBuilder.successResponse(branchNames);
+      } catch (error) {
+        return this.responseBuilder.errorResponse(error);
+      }
+    }
+  }
+  async getProjectsByAuthor(session: IUserSession): Promise<any> {
+    try {
+      const projects = await this.projectRepository.getProjectsByAuthor(
+        new Types.ObjectId(session.id)
+      );
+      return this.responseBuilder.successResponse(projects);
     } catch (error) {
       return this.responseBuilder.errorResponse(error);
     }
   }
-if(request.versionControl=== SOURCE_CONTROL.BITBUCKET){ 
-    const url = `https://api.bitbucket.org/2.0/repositories/${request.gitUsername}/${request.repositoryName}/refs/branches`;
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${request.accessToken}`,
-        }
-      });
-  
-      const branchNames: string[] = response.data.values.map((branch: any) => branch.name);
-      return this.responseBuilder.successResponse(branchNames);
-    } catch (error) {
-     return this.responseBuilder.errorResponse(error);
-    }
-  }
 }
-  async getProjectsByAuthor(session:IUserSession): Promise<any> {
-  try {
-    const projects = await this.projectRepository.getProjectsByAuthor(new Types.ObjectId(session.id));
-    return this.responseBuilder.successResponse(projects);
-  } catch (error) {
-    return this.responseBuilder.errorResponse(error);
-  }
-}
-
-}
-

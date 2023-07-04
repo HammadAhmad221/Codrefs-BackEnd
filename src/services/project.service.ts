@@ -47,7 +47,7 @@ export class ProjectService {
       });
       let projectResponse: IAddProjectResponce = {
         name: addProjectResponse.name,
-        sourceControl: addProjectResponse.sourceControl,
+        versionControl: addProjectResponse.versionControl,
         repositoryURL: addProjectResponse.repositoryURL,
         gitUsername: addProjectResponse.gitUsername,
         accessToken: addProjectResponse.accessToken,

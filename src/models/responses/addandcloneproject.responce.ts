@@ -1,6 +1,6 @@
 export interface IAddProjectResponce{
 name: string;
-sourceControl: number;
+versionControl: number;
 repositoryURL: string;
 accessToken: string;
 gitUsername:string;

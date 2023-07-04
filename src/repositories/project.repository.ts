@@ -2,6 +2,7 @@ import { Project } from "../entities/project";
 import { DatabaseService } from "../common/services/database.service";
 import { Inject } from "typescript-ioc";
 import { Types } from "mongoose";
+import { IProject } from "../models/project.model";
 
 export class ProjectRepository {
   constructor(@Inject private databaseService: DatabaseService) {}
@@ -16,7 +17,7 @@ export class ProjectRepository {
     versionControl: number
   ): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      let projectModel = {
+      let projectModel:IProject = {
         name: name,
         versionControl: versionControl,
         repositoryURL: repositoryURL,

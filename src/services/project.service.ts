@@ -33,19 +33,33 @@ export class ProjectService {
         session.id,
         request.versionControl
       );
-      const { repositoryURL, accessToken, gitUsername, branch } =
+      var { repositoryURL, accessToken, gitUsername, branch } =
         addProjectResponse;
-      let auth = { username: gitUsername, password: accessToken };
-      clone({
+
+        var auth;// = { username: gitUsername, password: accessToken };
+        if(request.versionControl==SOURCE_CONTROL.GITHUB){
+          auth={username:accessToken};
+        }else if(request.versionControl==SOURCE_CONTROL.BITBUCKET){
+          auth={username:request.gitUsername,password:request.accessToken};
+
+          let urlPart=repositoryURL.split("@")[1];
+          repositoryURL="https://x-token-auth:"+accessToken+"@"+urlPart;
+        
+        }
+
+  
+     
+    clone({
         http,
         fs,
-        dir: "/home/ec2-user/" + addProjectResponse._id,
+        dir: "/home/ec2-user/repositories/" + addProjectResponse._id,
         url: repositoryURL,
         singleBranch: true,
-        ref: branch,
-        onAuth: () => auth,
+        ref: branch, 
+         onAuth: () => auth,
       });
       let projectResponse: IAddProjectResponce = {
+        _id:addProjectResponse._id,
         name: addProjectResponse.name,
         versionControl: addProjectResponse.versionControl,
         repositoryURL: addProjectResponse.repositoryURL,
@@ -55,6 +69,7 @@ export class ProjectService {
         created: addProjectResponse.created,
         updated: addProjectResponse.updated,
       };
+    
 
       return this.responseBuilder.successResponse(projectResponse);
     } catch (error) {

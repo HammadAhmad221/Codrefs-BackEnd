@@ -1,4 +1,5 @@
 export interface IAddProjectResponce{
+_id:string;
 name: string;
 versionControl: number;
 repositoryURL: string;

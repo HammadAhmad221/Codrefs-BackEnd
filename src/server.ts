@@ -6,6 +6,9 @@ import { DatabaseService } from "./common/services/database.service";
 
 
 
+
+
+
 const port = process.env.PORT || 3000;
 
 const databaseService:DatabaseService=Container.get(DatabaseService);
